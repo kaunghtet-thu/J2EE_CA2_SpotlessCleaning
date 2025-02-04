@@ -1,0 +1,40 @@
+# Eclipse project files
+.settings/
+build/
+.classpath
+.project
+.target/
+
+# Java build files
+*.war
+*.ear
+*.log
+
+# Eclipse workspace
+*.bak
+*.swp
+*.tmp
+*.log
+
+# Maven / Gradle files
+*.m2/
+target/
+
+# IntelliJ IDEA files (if you're using it for some other part of your workflow)
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Java web project specific
+*.war.original
+*.war.deploy
+out/
+
+# Server-specific files (e.g. for Tomcat)
+apache-tomcat-*/
+*.tomcat/
+
+# Debug and temporary files
+*.hprof

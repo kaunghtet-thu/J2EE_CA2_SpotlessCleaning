@@ -1,0 +1,84 @@
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .category-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px;
+  }
+  .category-card-wrapper {
+    min-width: 300px;
+    flex-shrink: 0;
+  }
+  .category-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+  }
+  .category-card h3 {
+    margin: 0 0 15px 0;
+    font-size: 20px;
+    color: #333;
+  }
+  .service-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .service-link {
+    display: inline-block;
+    font-size: 18px;
+    color: #31525b;
+    text-decoration: none;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    flex-grow: 1;
+  }
+  .service-link:hover {
+    background-color: #31525b;
+    color: white;
+  }
+  .manage-btn {
+    background-color: #f39c12;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .manage-btn:hover {
+    background-color: #e67e22;
+  }
+  .editErr {
+    color: red;
+    background-color: #fdecea;
+    border: 1px solid red;
+  }
+  .editSuccess {
+    color: green;
+    background-color: #e7f9e7;
+    border: 1px solid green;
+  }
+  fieldset {
+    margin-bottom: 10px;
+    background-color: #b3dee5;
+    text-align: right;
+  }
+  #addNewCat {
+    background-color: #31525b;
+    color: white;
+    text-align: left;
+  }
+  #availServ {
+  	text-align: center;
+  }

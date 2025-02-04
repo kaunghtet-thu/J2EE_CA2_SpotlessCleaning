@@ -1,0 +1,151 @@
+@charset "UTF-8";
+header {
+    background-color: #b3dee5;
+    color: #31525b;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+body {
+    margin: 0; /* Remove default margin */
+    padding-bottom: 50px; /* Ensure content doesn't overlap footer */
+}
+
+.header-title {
+    font-size: 32px;
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-variant: small-caps;
+}
+
+.profile-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-icon i {
+    font-size: 30px;
+    color: black;
+    cursor: pointer;
+}
+
+.iconText {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.iconText:hover {
+    color: #007bff;
+}
+
+.login-button, .logout-button {
+    font-size: 14px;
+    padding: 5px 10px;
+    background-color: #31525b;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.profile-button {
+    font-size: 15px;
+    padding: 5px 10px;
+    background-color: #ffa101;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+.login-button:hover, .logout-button:hover {
+    color: black;
+    background-color: #497C85;
+}
+.profile-button:hover {
+    color: white;
+    background-color: #fae6b1;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+   
+}
+
+
+
+nav {
+    display: flex;
+    background-color: #31525b;
+    color: white;
+    padding: 10px 0;
+    margin-top: 0;
+    position: sticky;
+    top: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #007bff;
+}
+
+.editErr {
+    color: red;
+    background-color: #fdecea;
+    border: 1px solid red;
+}
+
+.editSuccess {
+    color: green;
+    background-color: #e7f9e7;
+    border: 1px solid green;
+}
+.errMsg {
+    color: red;
+    background-color: #fdecea;
+    border: 1px solid red;
+}
+
+.succMsg {
+    color: green;
+    background-color: #e7f9e7;
+    border: 1px solid green;
+}
+ footer {
+        background-color: #b3dee5;
+        color: #31525b;
+        padding: 20px 0;
+        text-align: center;
+        margin-top: 50px;
+   		position: fixed;
+        width: 100%;
+	    left: 0;
+	    bottom: 0;
+    }
