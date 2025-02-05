@@ -51,7 +51,7 @@ public class VerifyUser extends HttpServlet {
 				
 				response.sendRedirect("./index.jsp");
 			} else {
-				response.sendRedirect("./public/login.jsp?errorMsg=invalidLogin");
+				response.sendRedirect("./public/login.jsp?errorMsg=Email or password incorrect. Please try again!");
 			}
 	}
 	

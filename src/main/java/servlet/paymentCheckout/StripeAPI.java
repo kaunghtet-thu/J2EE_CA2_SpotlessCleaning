@@ -22,22 +22,13 @@ public class StripeAPI extends HttpServlet {
         Stripe.apiKey = "sk_test_51QlQe5PO5PNshsgdS4c8Gf4CPDZW3MW93QT1HXrL5lfAmZ36lseBr9VWIElBnj8d19Ul8zGCftAl0b3vgPMhuVAa00b4vWmk8U";
         
      // Retrieve the "total" value from the request parameter
-//        String totalParam = request.getParameter("total");
-        String totalParam = request.getHeader("Total-Amount"); // Read total from request headers
-        System.out.println("Total received api: " + totalParam);
+        String total = request.getParameter("totalAmount");
+        System.out.println("Total received api: " + total);
 
-        // Parse the "total" parameter into a long
-        long total;
-        try {
-            total = Long.parseLong(totalParam);
-        } catch (NumberFormatException e) {
-            // Handle invalid number format
-            
-            return;
-        }
+        long totalLong = Math.round(Double.parseDouble(total) * 100);
+        System.out.println(totalLong); // Output: 99
 
-        // Process the total value as needed
-        System.out.println("Total value: " + total);
+
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String path = baseUrl + request.getContextPath() + "/Checkout";
 
@@ -52,7 +43,7 @@ public class StripeAPI extends HttpServlet {
                         .setPriceData(
                             SessionCreateParams.LineItem.PriceData.builder()
                                 .setCurrency("sgd")
-                                .setUnitAmount(total) // Amount in cents ($10.00)
+                                .setUnitAmount(totalLong) // Amount in cents ($10.00)
                                 .setProductData(
                                     SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                         .setName("Product Name")

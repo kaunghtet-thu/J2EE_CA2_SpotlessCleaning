@@ -20,7 +20,7 @@
                 Yes, Logout
             </button>
         </form>
-        <a href="index.jsp" style="padding: 10px 20px; background-color: #31525b; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; cursor: pointer; display: inline-block; margin-left: 10px;">
+        <a href="../index.jsp" style="padding: 10px 20px; background-color: #31525b; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; cursor: pointer; display: inline-block; margin-left: 10px;">
            Stay
         </a>
     </div>
