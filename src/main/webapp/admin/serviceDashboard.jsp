@@ -30,6 +30,17 @@
     .manage-btn:hover {
         background-color: #233d46;
     }
+    
+    .terminate-btn {
+        background-color: red;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+     .terminate-btn:hover {
+        background-color: darkred;
+    }
     .filterOptions {
         display: flex;
         justify-content: flex-end;
@@ -170,16 +181,32 @@ if (isAdmin) {
                 </tr>
             </thead>
             <tbody>
-                <% for (DashboardService service : services) { %>
-                	boolean isActive = 
+                <% 
+                DiscountDAO disDao = new DiscountDAO();
+                //List<Discount> discounts = disDao.getAllDiscounts(isAdmin);
+                for (DashboardService service : services) { 
+                	boolean isActive = disDao.getDiscountStatusByServiceId(service.getId());
+                	if (service.getId() == 1) {
+                		System.out.println("asdfas" + isActive);
+                	}
+                %>
+                
+            
                     <tr>
                         <td><%= service.getId() %></td>
                         <td><%= service.getName() %></td>
                         <td><%= service.getNoOfBooks() %></td>
                         <td><%= service.getRating() %></td>
                         <td>
-                        	
+                        	<%if (isActive) {%>
+                        		<form action="../TerminatePromotion" method="POST" style="display:inline;">
+                        			 <input type="hidden" name="isAdmin" value="<%= isAdmin %>" />
+							        <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
+							        <input type="submit" value="Terminate Promotion" class="terminate-btn" />
+							    </form>
+                        	<%} else { %>
                             <a href="promoteService.jsp?serviceId=<%= service.getId() %>" class="manage-btn">Promote</a>
+                            <%} %>
                         </td>
                     </tr>
                 <% } %>

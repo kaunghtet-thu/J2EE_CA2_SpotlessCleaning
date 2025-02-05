@@ -36,24 +36,39 @@ public class AddDiscount extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    String serviceId = request.getParameter("serviceId");
 
-        String serviceId = request.getParameter("serviceId");
+	    if (serviceId == null || serviceId.isEmpty()) {
+	        serviceId = request.getParameter("serviceName");
+	    }
 
+	    int serviceIdInt;
+	    try {
+	        serviceIdInt = Integer.parseInt(serviceId);
+	    } catch (NumberFormatException e) {
+	        response.sendRedirect("./admin/promoteService.jsp?errorMsg=Invalid service ID");
+	        return;
+	    }
 
-        if (serviceId == null || serviceId.isEmpty()) {
-            serviceId = request.getParameter("serviceName"); 
-        }
-        int serviceIdInt = Integer.parseInt(serviceId);
+	    String discountName = request.getParameter("discountName");
+	    double discountPercentage;
+	    try {
+	        discountPercentage = Double.parseDouble(request.getParameter("discount"));
+	    } catch (NumberFormatException e) {
+	        response.sendRedirect("./admin/promoteService.jsp?errorMsg=Invalid discount percentage");
+	        return;
+	    }
 
-   
-        String discountName = request.getParameter("discountName");
-        double discountPercentage = Double.parseDouble(request.getParameter("discount"));
+	    DiscountDAO discountDAO = new DiscountDAO();
+	    boolean isInserted = discountDAO.createDiscount(serviceIdInt, discountName, discountPercentage);
 
-        DiscountDAO discountDAO = new DiscountDAO();
-        discountDAO.createDiscount(serviceIdInt, discountName, discountPercentage);
+	    if (isInserted) {
+	        response.sendRedirect("./admin/promoteService.jsp?successMsg=Discount added successfully");
+	    } else {
+	        response.sendRedirect("./admin/promoteService.jsp?errorMsg=Failed to add discount");
+	    }
+	}
 
-        response.sendRedirect("./admin/promoteService.jsp?successMsg=Discount added Successfully");
-    }
 
 }
