@@ -22,7 +22,7 @@
     <div class="profile-icon">
         <% if (isMember || isAdmin || isStaff) { %>
             <a href="profile.jsp" class="profile-button">Profile</a><br>
-            <button class ="logout-button" onclick="<%=request.getContextPath() %>/customer/warningLogout.jsp'">Log out</button>
+            <button class ="logout-button" onclick="location.href='<%=request.getContextPath() %>/customer/warningLogout.jsp'">Log out</button>
         <% } else { %>
             <button class="login-button" onclick="location.href='<%=request.getContextPath() %>/public/login.jsp'">Log in</button>
         <% } %>

@@ -87,6 +87,9 @@ if (isAdmin) {
     if (filter == null) {
         filter = ""; 
     }
+    if (categoryId == null) {
+    	categoryId = ""; 
+    }
 
     String filterMessage = "Showing all services";
     if ("booking_count".equals(filter)) {
@@ -168,13 +171,15 @@ if (isAdmin) {
             </thead>
             <tbody>
                 <% for (DashboardService service : services) { %>
+                	boolean isActive = 
                     <tr>
                         <td><%= service.getId() %></td>
                         <td><%= service.getName() %></td>
                         <td><%= service.getNoOfBooks() %></td>
                         <td><%= service.getRating() %></td>
                         <td>
-                            <a href="updateService.jsp?serviceId=<%= service.getId() %>" class="manage-btn">Manage</a>
+                        	
+                            <a href="promoteService.jsp?serviceId=<%= service.getId() %>" class="manage-btn">Promote</a>
                         </td>
                     </tr>
                 <% } %>

@@ -6,11 +6,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Update Service</title>
 <style>
 	  fieldset {
             margin-bottom: 10px;
-            background-color: #E3EED4;
+            background-color: #31525b;
+            color: white;
         }
         .container {
             max-width: 35vw;
