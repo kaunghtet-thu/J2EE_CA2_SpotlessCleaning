@@ -11,13 +11,13 @@ public class DiscountDAO {
     // Create a new discount
 
     public boolean createDiscount(int serviceId, String discountName, double discountPercentage) {
-        String sql = "INSERT INTO discount (service_id, discount_name, discount_percentage) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO discount (service_id, discount_name, discount) VALUES (?, ?, ?)";
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, serviceId);
             stmt.setString(2, discountName);
-            stmt.setDouble(3, discountPercentage);
+            stmt.setDouble(3, discountPercentage/100);
            
 
             int rowsAffected = stmt.executeUpdate();
@@ -72,23 +72,17 @@ public class DiscountDAO {
         }
     }
     
-    public boolean getDiscountStatusByServiceId(int discountId) {
+    public boolean getDiscountStatusByServiceId(int serviceId) {
 
     	 String sql = "SELECT d.is_active " +
                  "FROM service s " +
                  "LEFT JOIN discount d ON d.service_id = s.id AND d.is_active = true " +
                  "WHERE s.id = ?";
 
-    	 
-    	// SELECT * 
-    	 //FROM "service" s
-    	 //LEFT JOIN "discount" d 
-    	   //ON d.service_id = s.id AND d.is_true = true;
-
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            stmt.setInt(1, discountId);
+            stmt.setInt(1, serviceId);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -102,5 +96,30 @@ public class DiscountDAO {
 
         return false;
     }
+    
+    public int getDiscountPercentByServiceId(int serviceId) {
+
+   	 String sql = "SELECT d.discount " +
+                "FROM service s " +
+                "LEFT JOIN discount d ON d.service_id = s.id AND d.is_active = true " +
+                "WHERE s.id = ?";
+
+       try (Connection connection = DatabaseUtil.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+           stmt.setInt(1, serviceId);
+
+           try (ResultSet rs = stmt.executeQuery()) {
+               if (rs.next()) {
+                   return (int)(rs.getDouble("discount")*100);
+               }
+           }
+
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+
+       return 0;
+   }
 
 }

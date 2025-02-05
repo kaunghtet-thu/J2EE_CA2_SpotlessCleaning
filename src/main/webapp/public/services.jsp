@@ -18,6 +18,7 @@
         // Fetch all service categories
         ServiceCategoryDAO categoryDAO = new ServiceCategoryDAO();
         List<ServiceCategory> categories = categoryDAO.getAllServiceCategories();
+        DiscountDAO disDao = new DiscountDAO();
 
         // Fetch services for each category
         ServiceDAO serviceDAO = new ServiceDAO();
@@ -49,6 +50,9 @@
                             <div class="service-item">
                                 <a href="serviceDetails.jsp?serviceId=<%= service.getId() %>" class="service-link">
                                     <%= service.getName() %>
+                                    <%if (disDao.getDiscountStatusByServiceId(service.getId())){ %>
+                                    	<span class="discount-banner">Discount!</span>
+                                    <%} %>
                                 </a>
                             </div>
                         <% } %>

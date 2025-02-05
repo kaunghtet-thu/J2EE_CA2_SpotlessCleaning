@@ -16,6 +16,7 @@
     
     <%
         // Retrieve the cart from the session
+        DiscountDAO disDao = new DiscountDAO();
         List<Service> cart = (List<Service>) session.getAttribute("cart");
         if (cart == null || cart.isEmpty()) {
     %>
@@ -35,11 +36,18 @@
             <tbody>
                 <%
                     for (Service service : cart) {
+                    
+                 		
+                     	 double price = service.getPrice();
+                     	 if (disDao.getDiscountStatusByServiceId(service.getId())) {
+                         double discountPercent = disDao.getDiscountPercentByServiceId(service.getId());
+               			 price = price * (1 - discountPercent / 100);
+                     	 }
                 %>
                 <tr>
                     <td><%= service.getName() %></td>
                     <td><%= service.getDescription() %></td>
-                    <td><%= service.getPrice() %></td>
+                    <td><%= price %></td>
                     <td>
                         <!-- Delete Form -->
                         <form action="RemoveFromCart" method="POST" style="display:inline;">
@@ -61,7 +69,7 @@
                         <form action="bookAService.jsp" method="POST" style="display:inline;">
                             <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
                             <input type="hidden" name="serviceName" value="<%= service.getName() %>" />
-					                <input type="hidden" name="servicePrice" value="<%= service.getPrice() %>" />
+                            <input type="hidden" name="servicePrice" value="<%= price %>" />
                             <input type="submit" value="Book" />
                         </form>
                         <% }

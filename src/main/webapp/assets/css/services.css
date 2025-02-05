@@ -82,3 +82,11 @@
   #availServ {
   	text-align: center;
   }
+  .discount-banner {
+    background-color: #ff0000; 
+    color: #ffffff; 
+    padding: 2px 5px; 
+    border-radius: 3px; 
+    font-size: 12px; 
+    margin-left: 10px;
+}

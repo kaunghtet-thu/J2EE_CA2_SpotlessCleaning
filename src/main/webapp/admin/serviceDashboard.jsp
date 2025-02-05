@@ -35,6 +35,7 @@
         background-color: red;
         color: white;
         padding: 10px 20px;
+        border-radius: 10px;
         border: none;
         cursor: pointer;
     }
@@ -74,6 +75,10 @@
         width: 100vw;
         margin: 0 auto;
     }
+    .col1 { width: 10%; }
+  	.col2 { width: 20%; }
+  	.col3 { width: 30%; }
+
     .left-col {
     width: 25%;
     padding: 20px;
@@ -173,11 +178,12 @@ if (isAdmin) {
             </colgroup>
             <thead>
                 <tr>
-                    <th>Service id</th>
-                    <th>Service Name</th>
-                    <th>Booking Count</th>
-                    <th>Average Rating</th>
-                    <th>Actions</th>
+                    <th class="col1">Service id</th>
+                    <th class="col3">Service Name</th>
+                    <th class="col1">Booking Count</th>
+                    <th class="col1">Average Rating</th>
+                    <th class="col2">Discount</th>
+                    <th class="col2">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -197,6 +203,13 @@ if (isAdmin) {
                         <td><%= service.getName() %></td>
                         <td><%= service.getNoOfBooks() %></td>
                         <td><%= service.getRating() %></td>
+                        <td>
+                        <%if (disDao.getDiscountStatusByServiceId(service.getId())) {%>
+                        	<%=disDao.getDiscountPercentByServiceId(service.getId()) %> % Off
+                        <%} else { %>
+                        	<i>No discounts</i>
+                        <%} %>
+                        </td>
                         <td>
                         	<%if (isActive) {%>
                         		<form action="../TerminatePromotion" method="POST" style="display:inline;">
