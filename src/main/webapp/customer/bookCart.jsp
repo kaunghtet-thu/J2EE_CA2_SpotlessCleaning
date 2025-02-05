@@ -31,6 +31,7 @@
 <%@ page import="java.util.List, java.util.ArrayList" %>
 <%@ page import="DAO.MemberDAO, bean.Address, bean.Service" %>
 <%@include file="../assets/header.jsp" %>
+<link rel="stylesheet" type="text/css" href="../assets/css/cart.css">
 
 <%
     int memberId = (int)session.getAttribute("memberId");
