@@ -10,6 +10,7 @@
 </head>
 <body>
 <%@include file="../assets/header.jsp" %>
+<link rel="stylesheet" type="text/css" href="../assets/css/cart.css">
 
     <h1>Your Cart</h1>
     
@@ -77,7 +78,7 @@
         }
     %>
     <div class="container">
-	<form action="../shared/services.jsp" method="get">
+	<form action="../public/services.jsp" method="get">
 	    <button type="submit">Continue Shopping</button> <br>
 	</form>
 	<form action="./bookCart.jsp" method="get">

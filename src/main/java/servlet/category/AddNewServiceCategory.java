@@ -45,7 +45,7 @@ public class AddNewServiceCategory extends HttpServlet {
         Part imagePart = request.getPart("categoryImage");
 
         // Define the upload directory dynamically
-        String uploadDir = getServletContext().getRealPath("/public/images");
+        String uploadDir = getServletContext().getRealPath("./assets/images");
         File uploadDirPath = new File(uploadDir);
         if (!uploadDirPath.exists()) {
             uploadDirPath.mkdirs();  // Create the directory if it doesn't exist

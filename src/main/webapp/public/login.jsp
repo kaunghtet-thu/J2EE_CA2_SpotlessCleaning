@@ -62,12 +62,6 @@
 <body>
 <%@include file="../assets/header.jsp" %>
 
-<% if (errorMessage != null && errorMessage.equals("invalidLogin")) { %>
-    <div class="editErr">
-        Email or password incorrect. Please try again!
-    </div>
-<% } %>
-
 <% if (successMessage != null && successMessage.equals("Registration successful, please login.")) { %>
     <div class="editSuccess">
         <%= successMessage %>
