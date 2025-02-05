@@ -22,9 +22,9 @@
     <div class="profile-icon">
         <% if (isMember || isAdmin || isStaff) { %>
             <a href="profile.jsp" class="profile-button">Profile</a><br>
-            <button class ="logout-button" onclick="location.href='../customer/warningLogout.jsp'">Log out</button>
+            <button class ="logout-button" onclick="<%=request.getContextPath() %>/customer/warningLogout.jsp'">Log out</button>
         <% } else { %>
-            <button class="login-button" onclick="location.href='../public/login.jsp'">Log in</button>
+            <button class="login-button" onclick="location.href='<%=request.getContextPath() %>/public/login.jsp'">Log in</button>
         <% } %>
     </div> 
 </header>
@@ -33,7 +33,7 @@
 <nav>
     <ul>
         <li><a href="<%=request.getContextPath() %>/index.jsp">Home</a></li>
-        <li><a href="<%=request.getContextPath() %>/shared/services.jsp">Services</a></li>
+        <li><a href="<%=request.getContextPath() %>/public/services.jsp">Services</a></li>
         <% if (isAdmin) { %>
         	  <li><a href="<%=request.getContextPath() %>/admin/serviceDashboard.jsp">Service Dashboard</a></li>
         <% }if (isMember){

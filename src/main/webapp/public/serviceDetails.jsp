@@ -90,7 +90,7 @@
     </div>
     <%} else if (isPublic) { %>
     <div class="manage">
-      <form action="../login.jsp" method="POST">
+      <form action="../public/login.jsp" method="POST">
         <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
         <input type="submit" value="Login to Book" class="button" />
       </form>

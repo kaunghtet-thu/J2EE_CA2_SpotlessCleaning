@@ -38,3 +38,4 @@ apache-tomcat-*/
 
 # Debug and temporary files
 *.hprof
+src/main/webapp/META-INF/MANIFEST.MF
