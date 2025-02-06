@@ -58,11 +58,11 @@
                         <%	
                         } else {
                         %>
-                        <form action="bookAService.jsp" method="POST" style="display:inline;">
+                        <form action="./bookCart.jsp" method="GET" style="display:inline;">
                             <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
                             <input type="hidden" name="serviceName" value="<%= service.getName() %>" />
 					                <input type="hidden" name="servicePrice" value="<%= service.getPrice() %>" />
-                            <input type="submit" value="Book" />
+		    				<button type="submit" value="Book">Book</button> <br>
                         </form>
                         <% }
                         %>
@@ -78,12 +78,12 @@
         }
     %>
     <div class="container">
-	<form action="../public/services.jsp" method="get">
-	    <button type="submit">Continue Shopping</button> <br>
-	</form>
-	<form action="./bookCart.jsp" method="get">
-	    <button type="submit">Book All</button>
-	</form>
+		<form action="../public/services.jsp" method="GET">
+		    <button type="submit">Continue Shopping</button> <br>
+		</form>
+		<form action="./bookCart.jsp" method="GET">
+		    <button type="submit">Book All</button>
+		</form>
     </div>
     <%@include file="../assets/footer.html" %>
     

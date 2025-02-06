@@ -5,6 +5,7 @@ body {
     background-color: #f8f9fa;
     padding: 0;
     text-align: center;
+    
 }
 
 /* Heading */
@@ -39,7 +40,7 @@ th, td {
 }
 
 th {
-    background-color: #007bff;
+    background-color: rgb(0, 64, 128);
     color: white;
 }
 
@@ -49,7 +50,7 @@ td {
 
 /* Button Styling */
 button {
-    background-color: #007bff;
+    background-color: rgb(0, 64, 128);
     color: white;
     border: none;
     padding: 8px 16px;

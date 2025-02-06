@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List, java.util.ArrayList" %>
+<%@include file="../assets/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +8,13 @@
     <title>Checkout - Cleaning Services</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://js.stripe.com/v3/"></script>
-    <style>
+<link rel="stylesheet" type="text/css" href="../assets/css/cart.css">
+<style>
+		body {
+		    height: 100vh;            /* Full viewport height */
+		    margin: 0;                /* Remove default margin */
+		}
+    
     	#card {
             width: 50%;
             padding: 20px;
@@ -15,23 +23,19 @@
             background-color: #fff;
             text-align: center;
         }
-     .leebtn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
+	     .leebtn {
+	    display: block;
+	    width: 100%;
+	    padding: 10px;
+	    margin: 10px 0;
+	    background-color: #28a745;
+	    color: white;
+	    border: none;
+	    cursor: pointer;
+	  }
     </style>
 </head>
 <body>
-<%@ page import="java.util.List, java.util.ArrayList" %>
-<%@ page import="DAO.MemberDAO, bean.Address, bean.Service" %>
-<%@include file="../assets/header.jsp" %>
-<link rel="stylesheet" type="text/css" href="../assets/css/cart.css">
 
 <%
     int memberId = (int)session.getAttribute("memberId");
@@ -152,8 +156,9 @@
             <h4><strong>Total: SGD <%= String.format("%.2f", totalAmount) %></strong></h4>
         </div>
         <input type="hidden" name="totalAmount" value="<%= String.format("%.2f", totalAmount) %>">
-        
-        <button type="submit" class="btn btn-primary mt-3" id="book-btn">Confirm Booking</button>
+        <div>
+        	<button type="submit" class="btn btn-primary mt-3" id="book-btn">Confirm Booking</button>
+        </div>
 
     <% } %>
 </form>

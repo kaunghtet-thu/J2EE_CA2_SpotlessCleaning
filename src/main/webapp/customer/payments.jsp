@@ -1,3 +1,5 @@
+<%@include file="../assets/header.jsp" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -25,17 +27,24 @@
         #checkout-button:hover {
             background-color: #5469d4;
         }
+        #center {
+		    height: 100vh;            /* Full viewport height */
+		    margin: 0;                /* Remove default margin */
+		}
+ 
+        
     </style>
 </head>
 
-<body>
+<body id="center">
 <%
     String totalStr = request.getParameter("total");
 %>
     <p>Total Amount: <%= totalStr != null ? totalStr : "N/A" %></p>
     
-<button id="checkout-button">Pay with STRIPE</button>
-<div id="container"></div>
+<div id="container">
+	<button id="checkout-button">Pay with STRIPE</button>
+</div>
 <script>
 const stripe = Stripe('pk_test_51QlQe5PO5PNshsgdtUMyjNn6KbZHlgMD4vlkvIHDvXNPwF5rFBASJtnoEWmwRNSCzwL8NsjCllTmNrrU1n5yzidf00PT3TeXJf'); // Replace with your Stripe publishable key
 
@@ -72,3 +81,4 @@ document.getElementById('checkout-button').addEventListener('click', () => {
 
 </body>
 </html>
+<%@include file="../assets/footer.html" %>
