@@ -1,13 +1,14 @@
 package servlet.category;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-import java.io.File;
+import java.io.*;
 import java.io.IOException;
 
 import DAO.ServiceCategoryDAO;
@@ -15,6 +16,11 @@ import DAO.ServiceCategoryDAO;
 /**
  * Servlet implementation class AddCategory
  */
+@MultipartConfig(
+	    fileSizeThreshold = 1024 * 1024 * 2, // 2MB before writing to disk
+	    maxFileSize = 1024 * 1024 * 10,      // Max file size of 10MB
+	    maxRequestSize = 1024 * 1024 * 50    // Max request size of 50MB
+	)
 @WebServlet("/AddCategory")
 public class AddCategory extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,9 +41,25 @@ public class AddCategory extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String newCategoryName = request.getParameter("serviceCategory");
-        System.out.println("At add servlet " + request.getParameter("serviceCategory"));
-        Part imagePart = request.getPart("categoryImage");
+        // Parse the multipart request
+        String newCategoryName = null;
+        Part imagePart = null;
+
+        try {
+            for (Part part : request.getParts()) {
+                if (part.getName().equals("serviceCategory")) {
+                    newCategoryName = new BufferedReader(new InputStreamReader(part.getInputStream())).readLine();
+                } else if (part.getName().equals("categoryImage")) {
+                    imagePart = part;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("./public/services.jsp?errorMsg=Error processing form data.");
+            return;
+        }
+
+        System.out.println("At add servlet " + newCategoryName); // Debugging
 
         // Define the upload directory dynamically
         String uploadDir = getServletContext().getRealPath("./assets/images");

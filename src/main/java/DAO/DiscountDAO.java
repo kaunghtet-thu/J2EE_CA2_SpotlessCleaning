@@ -57,7 +57,7 @@ public class DiscountDAO {
     // Toggle discount status (only if isAdmin is true)
     public void updateDiscountStatus(int serviceId, boolean isAdmin) {
         if (!isAdmin) return; // Restrict access if not admin
-
+ 
         String sql = "UPDATE discount SET is_active = False where service_id = ? and is_active = True";
         
         try (Connection connection = DatabaseUtil.getConnection();

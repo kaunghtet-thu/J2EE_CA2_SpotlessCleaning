@@ -62,11 +62,6 @@
 	    max-width: 40vw; 
 	    margin: 0 auto; 
 	}
-	.edit-button {
-    padding: 5px;
-    margin: 0;
-    font-size: 14px;
-	}
 	.container{
 	text-align: center;
 	margin-top: 10px;
@@ -78,21 +73,22 @@
 		margin: 0 auto;
 	}
 	.edit-button {
-            font-size: 14px;
-            padding: 5px 10px;
-            border: 1px solid grey;
-            background-color: #c5d1ba;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .edit-button:hover {
-            background-color: #4cae4c;
-            color: white;
-        }
+       	font-size: 15px;
+	    padding: 5px 10px;
+	    background-color: #ffa101;
+	    color: white;
+	    cursor: pointer;
+	    border-radius: 5px;
+	    transition: background-color 0.3s, color 0.3s;
+    }
+    .edit-button:hover {
+        color: white;
+    	background-color: #fae6b1;
+    }
         
-      .discounts {
-        text-align: center;
-        margin-top: 10px;
+    .discounts {
+       text-align: center;
+       margin-top: 30px;
     }
     .discounts-container {
         display: flex;
@@ -147,6 +143,17 @@
         color: white;
     	background-color: #fae6b1;
     }
+    .terminatePromo {
+     	background-color: red;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+    }
+    .terminatePromo:hover {
+     	background-color: darkred;
+    }
   
 	
 
@@ -182,7 +189,7 @@
 <h1>
     <%= contents.get(0) %>
     <% if (isAdmin) { %>
-        <form action="editContent.jsp" method="post" style="display:inline;">
+        <form action="<%=request.getContextPath()%>/admin/editContent.jsp" method="post" style="display:inline;">
             <input type="hidden" name="contentId" value="1">
             <input type="hidden" name="content" value ="<%=contents.get(0) %>">
             <button type="submit" class="edit-button">Edit</button>
@@ -194,7 +201,7 @@
 <p class="welcome-content">
     <%= contents.get(1) %>
     <% if (isAdmin) { %>
-        <form action="editContent.jsp" method="post" style="display:inline;">
+        <form action="<%=request.getContextPath()%>/admin/editContent.jsp" method="post" style="display:inline;">
             <input type="hidden" name="contentId" value="2"> <!-- Adjust the index here -->
             <input type="hidden" name="content" value="<%= contents.get(1) %>">
             <button type="submit" class="edit-button" style="float: right;">Edit</button>
@@ -206,7 +213,7 @@
 	<h2>
 	    <%= contents.get(2) %>
 	    <% if (isAdmin) { %>
-	        <form action="editContent.jsp" method="post" style="display:inline;">
+	        <form action="<%=request.getContextPath()%>/admin/editContent.jsp" method="post" style="display:inline;">
 	            <input type="hidden" name="contentId" value="3"> <!-- Adjust the index here -->
 	            <input type="hidden" name="content" value="<%= contents.get(2) %>">
 	            <button type="submit" class="edit-button">Edit</button>
@@ -308,7 +315,9 @@
     int upTo = (int)(mostAmount*100);
 
    if (mostAmount > 0.0) {%>
+  
 	 <div class="discounts">
+	  <h2>Book now! Save now!</h2>
 	    <h2 style="color: red; font-weight: bold; text-align: center;">
 	        Up to <%= upTo %>% OFF!!
 	    </h2>
@@ -326,6 +335,12 @@
 	                <form action="./AddToCart" method="post" style="display:inline;">
 	                    <input type="hidden" name="serviceId" value="<%= service.getId() %>">
 	                    <button type="submit" class="add-to-cart">Add to Cart</button>
+	                </form>
+	            <%} else if (isAdmin) {%>
+	            	 <form action="./TerminatePromotion" method="post" style="display:inline;">
+	            	 	 <input type="hidden" name="isAdmin" value="<%= isAdmin %>" />
+	                    <input type="hidden" name="serviceId" value="<%= service.getId() %>">
+	                    <button type="submit" class="terminatePromo">Terminate discount</button>
 	                </form>
 	            <%} %>
 	            </div>
