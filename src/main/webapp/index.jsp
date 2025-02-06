@@ -39,7 +39,8 @@
 		text-align: center;
 	    border: 1px solid #ddd;
 	    border-radius: 5px;
-	    background-color:#b3dee5;
+	    background-color:#31525b;
+		color: white;
 	    padding: 10px;
 	    transition: background-color 0.3s, transform 0.2s;
 	    cursor: pointer;
@@ -87,6 +88,7 @@
     }
         
     .discounts {
+      
        text-align: center;
        margin-top: 30px;
     }
@@ -317,7 +319,14 @@
    if (mostAmount > 0.0) {%>
   
 	 <div class="discounts">
-	  <h2>Book now! Save now!</h2>
+	  <h2><%=contents.get(3) %></h2>
+	  <% if (isAdmin) { %>
+	        <form action="<%=request.getContextPath()%>/admin/editContent.jsp" method="post" style="display:inline;">
+	            <input type="hidden" name="contentId" value="4"> <!-- Adjust the index here -->
+	            <input type="hidden" name="content" value="<%= contents.get(3) %>">
+	            <button type="submit" class="edit-button">Edit</button>
+	        </form>
+	    <% } %>
 	    <h2 style="color: red; font-weight: bold; text-align: center;">
 	        Up to <%= upTo %>% OFF!!
 	    </h2>
@@ -332,12 +341,12 @@
 	            <p class="service-name">On <%= service.getName() %></p>
 	            <div class="card-buttons">
 	            <%if (isMember){ %>
-	                <form action="./AddToCart" method="post" style="display:inline;">
+	                <form action="./AddToCart" method="post">
 	                    <input type="hidden" name="serviceId" value="<%= service.getId() %>">
 	                    <button type="submit" class="add-to-cart">Add to Cart</button>
 	                </form>
 	            <%} else if (isAdmin) {%>
-	            	 <form action="./TerminatePromotion" method="post" style="display:inline;">
+	            	 <form action="./TerminatePromotion" method="post">
 	            	 	 <input type="hidden" name="isAdmin" value="<%= isAdmin %>" />
 	                    <input type="hidden" name="serviceId" value="<%= service.getId() %>">
 	                    <button type="submit" class="terminatePromo">Terminate discount</button>

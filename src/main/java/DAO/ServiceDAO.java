@@ -210,6 +210,32 @@ public class ServiceDAO {
         return services;
     }
     
+    public List<DashboardService> getMostPopularServices() {
+        String sql = "SELECT * FROM get_service_summary('booking_count') LIMIT 3";
+        List<DashboardService> popularServices = new ArrayList<>();
+
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) { // Iterate through multiple rows
+                DashboardService service = new DashboardService(
+                    rs.getInt("service_id"),
+                    rs.getString("service_name"),
+                    rs.getLong("booking_count"),
+                    rs.getDouble("average_rating")
+                );
+                popularServices.add(service);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider logging instead of printing stack trace
+        }
+
+        return popularServices; // Return list of services
+    }
+
+
+    
     public ArrayList<DashboardService> getServicesForDashboardByCategory (String filter, Integer categoryId) {
         // Correct SQL query with a placeholder for the filter
         String sql = "SELECT * FROM get_service_summary(?,?);";
