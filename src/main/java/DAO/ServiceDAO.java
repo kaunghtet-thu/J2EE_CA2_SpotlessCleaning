@@ -55,6 +55,25 @@ public class ServiceDAO {
         return null;
     }
     
+    
+    public String getServiceNameById(int id) {
+        String sql = "SELECT name FROM service WHERE id = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    
  // Read: Get a List of services by category ID
     public List<Service> getServicesByCategory(int id) {
         List<Service> result = new ArrayList<>();  // Initialize the list to store services
@@ -95,6 +114,7 @@ public class ServiceDAO {
             
             while (rs.next()) {
                 services.add(new Service(
+                		rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("description"),
                         rs.getInt("category_id"),

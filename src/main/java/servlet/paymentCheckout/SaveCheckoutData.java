@@ -32,118 +32,99 @@ public class SaveCheckoutData extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    	
+
         HttpSession session = request.getSession();
-        int memberId = (int)session.getAttribute("memberId");
+        int memberId = (int) session.getAttribute("memberId");
+
         MemberDAO memberDAO = new MemberDAO();
         ServiceDAO serviceDAO = new ServiceDAO();
 
-        // Get the common address, date, and time if selected
+        // Retrieve common selections
         Integer commonAddressId = null;
         String commonAddress = null;
         if (request.getParameter("commonAddress") != null && !request.getParameter("commonAddress").isEmpty()) {
             commonAddressId = Integer.parseInt(request.getParameter("commonAddress"));
-            if (commonAddressId == -1) {
-                commonAddress = request.getParameter("newCommonAddress");
-            } else {
-                Address commonAddressObj = memberDAO.getAddressById(commonAddressId);
-                commonAddress = commonAddressObj.getAddress();
-            }
+            Address commonAddressObj = memberDAO.getAddressById(commonAddressId);
+            commonAddress = commonAddressObj.getAddress();
         }
         String commonDate = request.getParameter("commonDate");
         String commonTime = request.getParameter("commonTime");
-        
 
-        // Get the selected services from the session
+        boolean differentAddresses = request.getParameter("differentAddresses") != null;
+        boolean differentDates = request.getParameter("differentDates") != null;
+        boolean differentTimes = request.getParameter("differentTimes") != null;
+
         List<Service> cart = (List<Service>) session.getAttribute("cart");
-
-        // Process the form data
-        List<Map<String, Object>> bookingDetails = new ArrayList<>();
         List<BookingService> bookingServices = new ArrayList<>();
         List<InvoiceItem> invoiceItems = new ArrayList<>();
+
         for (Service service : cart) {
             int serviceId = service.getId();
 
-            // Get the address, date, and time for the current service
-            String addressParam = "address_" + serviceId;
-            String dateParam = "serviceDate_" + serviceId;
-            String timeParam = "serviceTime_" + serviceId;
-
-            Integer addressId = null;
-            String address = null;
-            String date = null;
-            String time = null;
-
-            // Check if the user selected a different address, date, or time for the current service
-            boolean differentAddresses = request.getParameter("differentAddresses") != null;
-            boolean differentDates = request.getParameter("differentDates") != null;
-            boolean differentTimes = request.getParameter("differentTimes") != null;
-
+            // Determine address
+            Integer addressId = commonAddressId;
+            String address = commonAddress;
             if (differentAddresses) {
-                if (request.getParameter(addressParam) != null && !request.getParameter(addressParam).isEmpty()) {
-                    addressId = Integer.parseInt(request.getParameter(addressParam));
-                    if (addressId == -1) {
-                        address = request.getParameter("newAddress_" + serviceId);
-                    } else {
-                        Address selectedAddress = memberDAO.getAddressById(addressId);
-                        address = selectedAddress.getAddress();
-                    }
-                } else {
-                    address = null;
+                String addressParam = request.getParameter("address_" + serviceId);
+                if (addressParam != null && !addressParam.isEmpty()) {
+                    addressId = Integer.parseInt(addressParam);
+                    address = memberDAO.getAddressById(addressId).getAddress();
                 }
-            } else {
-                addressId = commonAddressId;
-                address = commonAddress;
             }
 
+            // Determine date
+            String date = commonDate;
             if (differentDates) {
-                date = request.getParameter(dateParam);
-            } else {
-                date = commonDate;
+                String dateParam = request.getParameter("serviceDate_" + serviceId);
+                if (dateParam != null && !dateParam.isEmpty()) {
+                    date = dateParam;
+                }
             }
 
+            // Determine time
+            String time = commonTime;
             if (differentTimes) {
-                time = request.getParameter(timeParam);
-            } else {
-                time = commonTime;
+                String timeParam = request.getParameter("serviceTime_" + serviceId);
+                if (timeParam != null && !timeParam.isEmpty()) {
+                    time = timeParam;
+                }
             }
-            
-            LocalDate serviceDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            LocalTime serviceTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
-            // Process the booking and save the data
-            BookingService bookingService = new BookingService();
-            bookingService.setServiceId(serviceId);
-            bookingService.setQuantity(1);
-            bookingService.setAddressId(addressId);
-            bookingService.setBookingDate(serviceDate);
-            bookingService.setBookingTime(serviceTime);
-            bookingServices.add(bookingService);
-            
-            //Create invoice item
-            Service iService = serviceDAO.getServiceById(serviceId);
-            ServiceInvoiceItem item = new ServiceInvoiceItem(iService.getName(), memberDAO.getAddressNameById(addressId), serviceDate, serviceTime, iService.getPrice());
-            invoiceItems.add(item);
-            
-            Map<String, Object> bookingInfo = new HashMap<>();
-            bookingInfo.put("serviceId", serviceId);
-            bookingInfo.put("address", address);
-            bookingInfo.put("date", date);
-            bookingInfo.put("time", time);
-            bookingDetails.add(bookingInfo);
+
+            if (date != null && !date.isEmpty() && time != null && !time.isEmpty()) {
+                LocalDate serviceDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                LocalTime serviceTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+
+                BookingService bookingService = new BookingService();
+                bookingService.setServiceId(serviceId);
+                bookingService.setQuantity(1);
+                bookingService.setAddressId(addressId);
+                bookingService.setBookingDate(serviceDate);
+                bookingService.setBookingTime(serviceTime);
+                bookingServices.add(bookingService);
+
+                Service iService = serviceDAO.getServiceById(serviceId);
+                ServiceInvoiceItem item = new ServiceInvoiceItem(
+                        iService.getName(),
+                        memberDAO.getAddressNameById(addressId),
+                        serviceDate, serviceTime,
+                        iService.getPrice()
+                );
+                invoiceItems.add(item);
+            } else {
+                System.out.println("Invalid date or time for service ID: " + serviceId);
+            }
         }
-        
+
         Invoice invoice = new Invoice(memberDAO.getMemberName(memberId), LocalDateTime.now(), invoiceItems);
-        
-        // Retrieve the totalAmount parameter from the request
         String totalAmount = request.getParameter("totalAmount");
-        System.out.print("mmspspsspps" + totalAmount);
         session.setAttribute("total", totalAmount);
         session.setAttribute("invoice", invoice);
         session.setAttribute("bookingServices", bookingServices);
 
+        String userEmail = request.getParameter("email");
+        String recipientEmail = request.getParameter("recipientEmail");
+        session.setAttribute("recipientEmail", recipientEmail == null || recipientEmail.trim().isEmpty() ? userEmail : recipientEmail);
+        
         response.sendRedirect(request.getContextPath() + "/customer/payments.jsp?total=" + totalAmount);
-    
-//        request.setAttribute("errorMessage", "Booking failed. Please try again.");
-//        request.getRequestDispatcher(request.getContextPath() + "/customer/cart.jsp").forward(request, response);        
     }
 }

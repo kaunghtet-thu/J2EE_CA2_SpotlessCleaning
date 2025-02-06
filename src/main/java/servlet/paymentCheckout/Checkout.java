@@ -20,6 +20,7 @@ import bean.Address;
 import bean.BookingService;
 import bean.Invoice;
 import bean.InvoiceItem;
+import bean.Service;
 
 
 /**
@@ -41,7 +42,7 @@ public class Checkout extends HttpServlet {
 		HttpSession session = request.getSession();
         int memberId = (int)session.getAttribute("memberId");
         List<BookingService> bookingServices =(List<BookingService>)session.getAttribute("bookingServices");
-        
+        List<Service> cart = (List<Service>)session.getAttribute("cart");   
 		// Create the booking
 		MemberDAO memberDAO = new MemberDAO();
         BookingDAO bookingDAO = new BookingDAO();
@@ -53,6 +54,8 @@ public class Checkout extends HttpServlet {
         boolean success = bookingServiceDAO.createBookingServices(bookingId, bookingServices);     
     
         if (success) {
+            cart.clear();
+            session.setAttribute("cart", cart);
             response.sendRedirect(request.getContextPath() + "/GenerateReceipt");
         } else {
         	response.sendRedirect(request.getContextPath() + "/customer/cart.jsp?errorMsg=Booking Failed!");

@@ -554,4 +554,23 @@ public class MemberDAO {
 	        }
 		 return null;
 	}
+	public String getMemberEmail(int memberId) {
+		String sql = String.format("Select * from %s WHERE id = ?", this.tableName);
+		
+		 try (Connection connection = DatabaseUtil.getConnection();
+	             PreparedStatement stmt = connection.prepareStatement(sql)) {
+	            
+	            stmt.setInt(1, memberId);
+	            ResultSet rs = stmt.executeQuery();
+	            
+	            if (rs.next()) {
+	                String email = rs.getString("email");
+	                return email;
+	            }
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+		 return null;
+	}
 }

@@ -36,15 +36,17 @@
     </style>
 </head>
 
-<body id="center">
+<body id="center" class="d-flex align-items-center">
 <%
     String totalStr = request.getParameter("total");
 %>
-    <p>Total Amount: <%= totalStr != null ? totalStr : "N/A" %></p>
+	<div>
+    	<p>Total Amount: <%= totalStr != null ? totalStr : "N/A" %></p>
+	</div>
     
-<div id="container">
-	<button id="checkout-button">Pay with STRIPE</button>
-</div>
+	<div id="container">
+		<button id="checkout-button">Pay with STRIPE</button>
+	</div>
 <script>
 const stripe = Stripe('pk_test_51QlQe5PO5PNshsgdtUMyjNn6KbZHlgMD4vlkvIHDvXNPwF5rFBASJtnoEWmwRNSCzwL8NsjCllTmNrrU1n5yzidf00PT3TeXJf'); // Replace with your Stripe publishable key
 
