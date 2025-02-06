@@ -44,8 +44,8 @@ public class InvoicingServlet extends HttpServlet {
             byte[] pdfBytes = bookingReceiptService.generatePdfReceipt(invoice);
 
             // Send the email with the PDF attachment
-            String recipientEmail = "b660360@gmail.com";
-//            String recipientEmail = "kaunghsetaung8@gmail.com";
+//            String recipientEmail = "b660360@gmail.com";
+            String recipientEmail = "kaunghsetaung8@gmail.com";
             String subject = "Your Booking Receipt";
             String body = "Thank you for your booking. Please find your receipt attached.\n\n" +
                     "Best regards,\n" +

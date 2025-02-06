@@ -36,6 +36,7 @@ if (serviceId != null) {
 	serviceId = (String) session.getAttribute("serviceId");
     name = (String) session.getAttribute("serviceName");
     price = (String) session.getAttribute("servicePrice");
+    System.out.println(price + " at book a servicejsp");
     addressId = (String) session.getAttribute("addressId");
 
 if (request.getParameter("cleaningHour") != null) {

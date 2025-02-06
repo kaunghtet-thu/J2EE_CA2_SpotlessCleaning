@@ -114,6 +114,7 @@ public class ServiceDAO {
             
             while (rs.next()) {
                 services.add(new Service(
+                		rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("description"),
                         rs.getInt("category_id"),
