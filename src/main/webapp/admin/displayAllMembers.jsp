@@ -78,7 +78,7 @@ if (isAdmin) {
 
     if ("POST".equalsIgnoreCase(request.getMethod())) {
         String idParam = request.getParameter("id");
-        int hiddenid = (idParam != null) ? Integer.parseInt(idParam) : 0;
+        int hiddenid = (idParam != null) ? Integer.parseInt(idParam)	 : 0;
         String action = request.getParameter("action");
 
         boolean updateSuccess = false;
@@ -148,7 +148,7 @@ if (isAdmin) {
                 <% } %>
             </td>
             <td>
-			    <form method="post" action="profile.jsp">
+			    <form method="post" action="../shared/profile.jsp">
 			        <input type="hidden" name="id" value="<%= eachMember.getId() %>">
 			        <button type="submit" name="action" value="manage" class="edit-button">Manage</button>
 			    </form>

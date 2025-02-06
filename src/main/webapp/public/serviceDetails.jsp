@@ -60,14 +60,17 @@
   ServiceDAO serviceDao = new ServiceDAO();
   Service service = serviceDao.getServiceById(serviceId);
   DiscountDAO disDao = new DiscountDAO();
-  List<Service> cart = (List<Service>)session.getAttribute("cart");
+  
   boolean isInCart = false;
+  List<Service> cart = (List<Service>)session.getAttribute("cart");
+  if (cart != null) {
+  
   for (Service s : cart) {
       if (s.getId() == service.getId()) {
           isInCart = true;
           break;
       }
-  }
+  } }
 
 
 %>

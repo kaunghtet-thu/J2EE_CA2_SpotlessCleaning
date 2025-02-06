@@ -11,11 +11,12 @@
 <body>
 <%@include file="../assets/header.jsp" %>
 <link rel="stylesheet" type="text/css" href="../assets/css/cart.css">
-
+<%if (isMember){ %>
     <h1>Your Cart</h1>
     
     <%
         // Retrieve the cart from the session
+        ServiceDAO serviceDao = new ServiceDAO();
         DiscountDAO disDao = new DiscountDAO();
         List<Service> cart = (List<Service>) session.getAttribute("cart");
         if (cart == null || cart.isEmpty()) {
@@ -41,8 +42,9 @@
                      	 double price = service.getPrice();
                      	 if (disDao.getDiscountStatusByServiceId(service.getId())) {
                          double discountPercent = disDao.getDiscountPercentByServiceId(service.getId());
-               			 price = price * (1 - discountPercent / 100);
-                     	 }
+               			 price = serviceDao.getServiceById(service.getId()).getPrice() * (1 - discountPercent / 100);
+               			 service.setName(serviceDao.getServiceNameById(service.getId()) + "(" + (int)(discountPercent)+ "% OFF)");
+               			 service.setPrice(price);                     	 }
                 %>
                 <tr>
                     <td><%= service.getName() %></td>
@@ -91,11 +93,15 @@
 		<form action="../public/services.jsp" method="GET">
 		    <button type="submit">Continue Shopping</button> <br>
 		</form>
+		<% if(cart != null && cart.size()> 1) {%>
 		<form action="./bookCart.jsp" method="GET">
 		    <button type="submit">Book All</button>
 		</form>
+		<%} %>
     </div>
     <%@include file="../assets/footer.html" %>
-    
+ <%} else { %>
+<p style="color: red; font-weight: bold; font-size: 16px; text-align: center;">You are not authorized</p>
+<%} %>   
 </body>
 </html>
