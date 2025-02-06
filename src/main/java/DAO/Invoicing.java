@@ -115,6 +115,7 @@ public class Invoicing {
         document.add(new Paragraph("\n"));
 
         double gstAmount = totalprice * 0.09; 
+        totalprice += gstAmount;
         double discountAmount=0;
         if (invoice.getDiscount() < 1) {
         	 discountAmount = totalprice * invoice.getDiscount();
@@ -134,7 +135,7 @@ public class Invoicing {
      summary.addCell(new Cell().add(new Paragraph("$" + String.format("%.2f", merchandizeTotalPrice))));
 
      summary.addCell(new Cell().add(new Paragraph("Original Price:")));
-     summary.addCell(new Cell().add(new Paragraph("$" + String.format("%.2f", totalprice))));
+     summary.addCell(new Cell().add(new Paragraph("$" + String.format("%.2f", serviceTotalPrice+merchandizeTotalPrice))));
 
      summary.addCell(new Cell().add(new Paragraph("GST (9%):")));
      summary.addCell(new Cell().add(new Paragraph("$" + String.format("%.2f", gstAmount))));

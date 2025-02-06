@@ -102,12 +102,12 @@ public class SaveCheckoutData extends HttpServlet {
                 bookingService.setBookingTime(serviceTime);
                 bookingServices.add(bookingService);
 
-                Service iService = serviceDAO.getServiceById(serviceId);
+//                Service iService = serviceDAO.getServiceById(serviceId);
                 ServiceInvoiceItem item = new ServiceInvoiceItem(
-                        iService.getName(),
+                        service.getName(),
                         memberDAO.getAddressNameById(addressId),
                         serviceDate, serviceTime,
-                        iService.getPrice()
+                        service.getPrice()
                 );
                 invoiceItems.add(item);
             } else {

@@ -51,4 +51,8 @@ public class Invoice {
 	public String getDiscountString () {
 		return (int)(this.discount*100) +"% Off";
 	}
+
+	public void setBookingId(int bookingId) {
+		this.bookingId = bookingId;		
+	}
 }

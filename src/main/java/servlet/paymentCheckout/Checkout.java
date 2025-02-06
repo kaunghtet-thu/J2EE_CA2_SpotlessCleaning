@@ -46,15 +46,22 @@ public class Checkout extends HttpServlet {
 		// Create the booking
 		MemberDAO memberDAO = new MemberDAO();
         BookingDAO bookingDAO = new BookingDAO();
+        
+        // create booking
         int bookingId = bookingDAO.createBooking(memberId);
         session.setAttribute("bookingId", bookingId);
         
         // Create the booking services
         BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
         boolean success = bookingServiceDAO.createBookingServices(bookingId, bookingServices);     
-    
+        boolean emptyCart = (boolean)session.getAttribute("emptyCart");
         if (success) {
-            cart.clear();
+        	if(emptyCart) {
+        		cart.clear();
+        	}
+        	else {
+        		cart.removeIf(service -> service.getId() == (int)session.getAttribute("singleId"));
+        	}
             session.setAttribute("cart", cart);
             response.sendRedirect(request.getContextPath() + "/GenerateReceipt");
         } else {
