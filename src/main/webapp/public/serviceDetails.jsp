@@ -98,7 +98,7 @@
     </div>
     <%if (isMember) { %>
     <div class="booking">
-      <form action="./bookCart.jsp" method="POST">
+      <form action="../customer/bookCart.jsp" method="POST">
         <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
         <input type="submit" value="Book Service" class="button" />
       </form>
