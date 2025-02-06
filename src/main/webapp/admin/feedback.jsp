@@ -8,45 +8,54 @@
 <title>Feedbacks</title>
 <style>
    
-    table {
+     table {
         width: 100%;
-        table-layout: fixed; /* Ensures table columns don't stretch beyond the container */
+        table-layout: fixed; 
         border-collapse: collapse;
-        margin: 0px;
     }
-
     th, td {
         padding: 10px;
         border: 1px solid #ddd;
-        word-wrap: break-word; /* Break long words into multiple lines */
+        word-wrap: break-word; 
     }
-
     th {
-        background-color: #f4f4f4;
+        background-color: #b3dee5;
     }
 
-    /* Optional: Add a max-width to make sure it doesn’t stretch too wide */
    .table-container, .header {
-    display: flex;
-    justify-content: center; /* This will horizontally center the table */
-    align-items: center; /* This will vertically center the table (if needed) */
-    width: 100%; /* Ensures the container takes full width */
+	    display: flex;
+	    justify-content: center; 
+	    align-items: center; 
+	    width: 100%; 
 	}
     .actions {
         white-space: nowrap; 
     }
-     .edit-button {
-            font-size: 14px;
-            padding: 5px 10px;
-            border: 1px solid grey;
-            background-color: #c5d1ba;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .edit-button:hover {
-            background-color: #4cae4c;
-            color: white;
-        }
+    .edit-button {
+        font-size: 14px;
+	    padding: 5px 10px;
+	    background-color: #31525b;
+	    color: white;
+	    cursor: pointer;
+	    border-radius: 5px;
+	    transition: background-color 0.3s, color 0.3s;
+	}
+    .edit-button:hover {
+ 		color: black;
+    	background-color: #497C85;
+     }
+     .remove-button {
+     	font-size: 15px;
+	    padding: 5px 10px;
+	    background-color: red;
+	    color: white;
+	    cursor: pointer;
+	    border-radius: 5px;
+	    transition: background-color 0.3s, color 0.3s;
+     }
+     .remove-button:hover {
+ 		 background-color: darkred;
+     }
 
 </style>
 </head>
@@ -102,12 +111,12 @@
 
                 <td>
                     <%if (feedback.getDisplay()) { %>
-                    <form action="DisplayFalse" method="POST">
+                    <form action="../DisplayFalse" method="POST">
                         <input type="hidden" name="feedbackId" value="<%= feedback.getId() %>">
-                        <button type="submit" class="edit-button">Remove this from display</button>
+                        <button type="submit" class="remove-button">Remove this from display</button>
                     </form>
                     <%} else { %>
-                    <form action="DisplayTrue" method="POST">
+                    <form action="../DisplayTrue" method="POST">
                         <input type="hidden" name="feedbackId" value="<%= feedback.getId() %>">
                         <button type="submit" class="edit-button">Add this to display</button>
                     </form>

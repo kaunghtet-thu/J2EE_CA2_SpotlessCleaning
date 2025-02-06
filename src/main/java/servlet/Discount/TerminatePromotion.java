@@ -38,7 +38,9 @@ public class TerminatePromotion extends HttpServlet {
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	        // Get the serviceId from the form
 	        String serviceIdParam = request.getParameter("serviceId");
+	        //System.out.println(serviceIdParam + " at terminate servlet 41");
 	        boolean isAdmin = Boolean.parseBoolean(request.getParameter("isAdmin"));
+	        //System.out.println(isAdmin + " at terminate servlet 43");
 	       
 	        
 	        // Check if serviceId is valid

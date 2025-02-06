@@ -15,7 +15,7 @@ import DB.DatabaseUtil;
 /**
  * Servlet implementation class DisplayTrue
  */
-@WebServlet("/public/DisplayTrue")
+@WebServlet("/DisplayTrue")
 public class DisplayTrue extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

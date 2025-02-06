@@ -1,0 +1,128 @@
+################################################################
+Update member email 
+################################################################
+CREATE OR REPLACE PROCEDURE update_member_email(
+    IN member_id INT,
+    IN new_email TEXT,
+    IN actor_id INT,
+    OUT success BOOLEAN
+)
+LANGUAGE plpgsql AS $$
+DECLARE
+    email_exists BOOLEAN;
+BEGIN
+    -- Check if the email is already in use by another member
+    SELECT EXISTS (
+        SELECT 1
+        FROM member
+        WHERE email = new_email AND id != member_id
+    ) INTO email_exists;
+
+    IF email_exists THEN
+        success := FALSE;
+    ELSE
+        -- Update the email if not in use
+        UPDATE member
+        SET email = new_email
+        WHERE id = member_id AND id = actor_id;
+
+        success := (FOUND); -- Set success to TRUE if the row was updated
+    END IF;
+END;
+$$;
+
+
+################################################################
+Update member name
+################################################################
+CREATE OR REPLACE PROCEDURE update_member_name(
+    IN member_id INT,
+    IN new_name TEXT,
+    IN actor_id INT,
+    OUT success BOOLEAN
+)
+LANGUAGE plpgsql AS $$
+DECLARE
+    name_exists BOOLEAN;
+BEGIN
+    -- Check if the name is already in use by another member
+    SELECT EXISTS (
+        SELECT 1
+        FROM member
+        WHERE name = new_name AND id != member_id
+    ) INTO name_exists;
+
+    IF name_exists THEN
+        success := FALSE;
+    ELSE
+        -- Update the name if not in use
+        UPDATE member
+        SET name = new_name
+        WHERE id = member_id AND id = actor_id;
+
+        success := (FOUND); -- Set success to TRUE if the row was updated
+    END IF;
+END;
+$$;
+
+
+################################################################
+Function Updated in CA2 to align with updated table structures
+################################################################
+CREATE OR REPLACE FUNCTION get_feedback_service_member_name(p_feedback_id INT)
+RETURNS TABLE (feedback_id INT, service_name VARCHAR(100), member_name VARCHAR(100)) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT f.id, s.name AS service_name, m.name AS member_name
+	FROM feedback f
+	JOIN booking_service b ON b.id = f.booking_service_id
+	JOIN service s ON s.id = b.service_id
+	JOIN booking bk ON bk.id = b.booking_id
+	JOIN member m ON m.id = bk.member_id
+    WHERE f.id = p_feedback_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+################################################################
+Service summary for admin CA2
+################################################################
+CREATE OR REPLACE FUNCTION get_service_summary(order_by_column TEXT, category_id INT DEFAULT NULL)
+RETURNS TABLE (
+    service_id INT, 
+    service_name TEXT, 
+    booking_count BIGINT, 
+    average_rating NUMERIC
+) 
+LANGUAGE plpgsql 
+AS $$
+DECLARE
+    dynamic_query TEXT;
+BEGIN
+    -- Construct the dynamic query
+    dynamic_query := format(
+        'SELECT 
+            s.id::INT AS service_id, 
+            s.name::TEXT AS service_name, 
+            COUNT(b.service_id)::BIGINT AS booking_count, 
+            COALESCE(AVG(f.rating)::NUMERIC, 0)::NUMERIC AS average_rating
+        FROM service s
+        LEFT JOIN booking_service b ON s.id = b.service_id
+        LEFT JOIN feedback f ON b.id = f.booking_service_id
+        %s -- Add WHERE clause if category_id is provided
+        GROUP BY s.id, s.name
+        ORDER BY %s', 
+        CASE 
+            WHEN category_id IS NOT NULL THEN 'WHERE s.category_id = ' || category_id
+            ELSE ''
+        END,
+        CASE 
+            WHEN order_by_column = 'booking_count' THEN 'booking_count DESC'
+            WHEN order_by_column = 'average_rating' THEN 'average_rating DESC'
+            ELSE 'service_id'
+        END
+    );
+
+    -- Execute the dynamic query
+    RETURN QUERY EXECUTE dynamic_query;
+END $$;
