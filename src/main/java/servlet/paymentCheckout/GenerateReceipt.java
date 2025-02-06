@@ -19,7 +19,7 @@ import bean.ServiceInvoiceItem;
 import bean.InvoiceItem;
 
 @WebServlet("/GenerateReceipt")
-public class InvoicingServlet extends HttpServlet {
+public class GenerateReceipt extends HttpServlet {
 
     private Invoicing bookingReceiptService = new Invoicing();
 
@@ -27,6 +27,8 @@ public class InvoicingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	HttpSession session = request.getSession();
     	Invoice invoice = (Invoice) session.getAttribute("invoice");
+    	int bookingId = (int)session.getAttribute("bookingId");
+    	invoice.setBookingId(bookingId);
 
 
     	try {

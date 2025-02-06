@@ -46,10 +46,27 @@
 <body>
 <%
     int memberId = (int) session.getAttribute("memberId");
-    MemberDAO memberDAO = new MemberDAO();
-    List<Address> addresses = memberDAO.getAddressByMemberId(memberId);
-    List<Service> cart = (List<Service>) session.getAttribute("cart");
+	String singleId = request.getParameter("serviceId");
+	boolean emptyCart = true;
 
+	ServiceDAO serviceDAO = new ServiceDAO();
+    MemberDAO memberDAO = new MemberDAO();
+    
+    List<Service> cart = (List<Service>) session.getAttribute("cart");
+    List<Address> addresses = memberDAO.getAddressByMemberId(memberId);
+    
+	
+	if(singleId != null && !singleId.isEmpty()) { //book directly without putting into cart
+		int sId = Integer.parseInt(singleId);
+		Service single = serviceDAO.getServiceById(sId);
+		cart.clear();
+		cart.add(single);
+		emptyCart = false;
+		session.setAttribute("singleId", single.getId());
+	}
+	session.setAttribute("emptyCart", emptyCart);
+	
+	// total
     double subtotal = cart != null ? cart.stream().mapToDouble(Service::getPrice).sum() : 0.0;
     double gstRate = 0.09;
     double gstAmount = subtotal * gstRate;
@@ -57,6 +74,8 @@
 
     String email = memberDAO.getMemberEmail(memberId);
     String maskedEmail = email.replaceFirst("\\w{3}", "***");
+    
+    
 %>
 
 <h2>Checkout</h2>
@@ -157,18 +176,17 @@
 
                 <!-- Email Selection -->
                 <div class="mt-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="useNewEmail" name="useNewEmail" onchange="toggleNewEmailInput()">
-                        <label class="form-check-label" for="useNewEmail">Use a different email</label>
-                    </div>
+                    <p id="currentEmail">Receipt will be sent to this email: <%= maskedEmail %></p>
                     <div id="newEmailSection" class="form-group" style="display:none;">
                         <label for="recipientEmail">Recipient Email:</label>
                         <input type="email" class="form-control" id="recipientEmail" name="recipientEmail" placeholder="Enter recipient email">
                     </div>
-                    <p id="currentEmail">Your email: <%= maskedEmail %></p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="useNewEmail" name="useNewEmail" onchange="toggleNewEmailInput()">
+                        <label class="form-check-label" for="useNewEmail">Use a different email</label>
+                    </div>
                 </div>
 				<input type="hidden"  id="email" name="email" value="<%= email %>">
-
                 <button class="btn btn-primary mt-3" id="book-btn">Confirm Booking</button>
             <% } else { %>
                 <p>Your cart is empty.</p>
