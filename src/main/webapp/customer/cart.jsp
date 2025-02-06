@@ -50,7 +50,7 @@
                     <td><%= price %></td>
                     <td>
                         <!-- Delete Form -->
-                        <form action="RemoveFromCart" method="POST" style="display:inline;">
+                        <form action="../RemoveFromCart" method="POST" style="display:inline;">
                             <input type="hidden" name="serviceId" value="<%= service.getId() %>">
                             <button type="submit">Delete</button>
                         </form>
@@ -58,7 +58,7 @@
                         if(isPublic) {
                         %>
                         
-                        <form action="login.jsp" method="POST" style="display:inline;">
+                        <form action="../public/login.jsp" method="POST" style="display:inline;">
                             <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
                             <input type="hidden" name="serviceName" value="<%= service.getName() %>" />
                             <input type="submit" value="Book" />
@@ -66,7 +66,7 @@
                         <%	
                         } else {
                         %>
-                        <form action="bookAService.jsp" method="POST" style="display:inline;">
+                        <form action="./bookAService.jsp" method="POST" style="display:inline;">
                             <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
                             <input type="hidden" name="serviceName" value="<%= service.getName() %>" />
                             <input type="hidden" name="servicePrice" value="<%= price %>" />

@@ -15,7 +15,7 @@ import bean.Service;
 /**
  * Servlet implementation class RemoveFromCart
  */
-@WebServlet("/public/RemoveFromCart")
+@WebServlet("/RemoveFromCart")
 public class RemoveFromCart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -77,7 +77,7 @@ public class RemoveFromCart extends HttpServlet {
         }
 
         // Redirect back to the cart page
-        response.sendRedirect("cart.jsp");
+        response.sendRedirect("./customer/cart.jsp");
     }
 	
 
