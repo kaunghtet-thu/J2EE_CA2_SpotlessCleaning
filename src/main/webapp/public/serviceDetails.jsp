@@ -60,6 +60,16 @@
   ServiceDAO serviceDao = new ServiceDAO();
   Service service = serviceDao.getServiceById(serviceId);
   DiscountDAO disDao = new DiscountDAO();
+  List<Service> cart = (List<Service>)session.getAttribute("cart");
+  boolean isInCart = false;
+  for (Service s : cart) {
+      if (s.getId() == service.getId()) {
+          isInCart = true;
+          break;
+      }
+  }
+
+
 %>
 
 <div class="service-details">
@@ -89,10 +99,14 @@
         <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
         <input type="submit" value="Book Service" class="button" />
       </form>
+      <% if (isInCart) {%>
+      	<p>You have this service in your cart</p>
+      <%} else {%>
       <form action="<%= request.getContextPath()%>/AddToCart" method="POST">
         <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
         <input type="submit" value="Add to Cart" class="button" />
       </form>
+      <%} %>
     </div>
     <%} else if (isAdmin){ %>
     <div class="manage">

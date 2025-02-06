@@ -11,8 +11,6 @@
 <meta charset="UTF-8">
 <title>SPOTLESS</title>
   <style>
-    /* General page styling */
-
     h1,h2 {
         text-align: center;
         font-size: 1.5em;
@@ -91,7 +89,65 @@
             background-color: #4cae4c;
             color: white;
         }
-
+        
+      .discounts {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .discounts-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+    }
+    .discount-card {
+        width: 300px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        background: white;
+        transition: transform 0.2s ease-in-out;
+    }
+    .discount-card:hover {
+        transform: scale(1.05);
+    }
+    .discount-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+    .discount-percent {
+        color: red;
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+    .service-name {
+        font-size: 16px;
+        color: #666;
+    }
+    .card-buttons {
+        margin-top: 10px;
+    }
+    .card-buttons button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .add-to-cart {
+        background-color: #ffa101;
+        color: white;
+    }
+    .add-to-cart:hover {
+        color: white;
+    	background-color: #fae6b1;
+    }
+  
 	
 
 </style>
@@ -210,7 +266,7 @@
 			        	    <div class="carousel-item">
 			        	        <div class="feedback-item admin-feedback-item">
 			        	            <h3>Add More Feedbacks</h3>
-			        	            <a href="feedback.jsp" class="edit-button">Add More Feedback</a>
+			        	            <a href="<%=request.getContextPath()%>/admin/feedback.jsp" class="edit-button">Add More Feedback</a>
 			        	        </div>
 			        	    </div>
 			        	<% } 
@@ -238,6 +294,50 @@
     <%
         }
     %>
+    
+     <% 
+    DiscountDAO disDao = new DiscountDAO();
+    ServiceDAO serviceDao = new ServiceDAO();
+    List<Discount> discounts =  disDao.getAllDiscounts();
+    double mostAmount = 0.0;
+    for (Discount discount : discounts) {
+        if (discount.getDiscount() > mostAmount) {
+            mostAmount = discount.getDiscount();
+        }
+    }
+    int upTo = (int)(mostAmount*100);
+
+   if (mostAmount > 0.0) {%>
+	 <div class="discounts">
+	    <h2 style="color: red; font-weight: bold; text-align: center;">
+	        Up to <%= upTo %>% OFF!!
+	    </h2>
+	    <div class="discounts-container">
+	        <%  
+	            for (Discount discount : discounts) {
+	                Service service = serviceDao.getServiceById(discount.getServiceId());
+	        %>
+	        <div class="discount-card">
+	            <p class="discount-title"><%= discount.getDiscountName() %></p>
+	            <p class="discount-percent"><%= (int)(discount.getDiscount()*100) %>% OFF</p>
+	            <p class="service-name">On <%= service.getName() %></p>
+	            <div class="card-buttons">
+	            <%if (isMember){ %>
+	                <form action="./AddToCart" method="post" style="display:inline;">
+	                    <input type="hidden" name="serviceId" value="<%= service.getId() %>">
+	                    <button type="submit" class="add-to-cart">Add to Cart</button>
+	                </form>
+	            <%} %>
+	            </div>
+	        </div>
+	        <% } %>
+	    </div>
+	</div>
+	   
+<%	   
+   }
+%>
+    
 </div>
 <div>
 </div>

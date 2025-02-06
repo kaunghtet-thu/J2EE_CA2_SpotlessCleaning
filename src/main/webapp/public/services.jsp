@@ -22,12 +22,29 @@
 
         // Fetch services for each category
         ServiceDAO serviceDAO = new ServiceDAO();
+        if(isAdmin) {%>
+		<div class="category-card-wrapper">
+	      <div class="category-card" id="addNewCat">
+	        <h3 style="color: white;">+ Add New Category</h3>
+	        <form action="../AddCategory" method="post" enctype="multipart/form-data">
+	          <label for="serviceCategory">Category Name:</label>
+	          <input type="text" id="serviceCategory" name="serviceCategory" required><br>
+	
+	          <label for="categoryImage">Category Image:</label>
+	          <input type="file" id="categoryImage" name="categoryImage" ><br><br>
+	
+	          <button type="submit" class="manage-btn">Add Category</button>
+	        </form>
+	      </div>
+	    </div>
+		<% }
         for (ServiceCategory category : categories) {
             int categoryId = category.getId();
             List<Service> services = serviceDAO.getServicesByCategory(categoryId);
             boolean hasServices = (services != null && !services.isEmpty());
 
-            // Determine if the category should be displayed
+
+			
             if (isAdmin || hasServices) {
     %>
                 <div class="category-card-wrapper">

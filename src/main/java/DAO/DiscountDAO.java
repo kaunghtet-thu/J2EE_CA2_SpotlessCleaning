@@ -30,11 +30,9 @@ public class DiscountDAO {
     }
 
     // Get all discounts (only if isAdmin is true)
-    public List<Discount> getAllDiscounts(boolean isAdmin) {
+    public List<Discount> getAllDiscounts() {
         List<Discount> discountList = new ArrayList<>();
-        if (!isAdmin) return discountList; 
-
-        String sql = "SELECT * FROM discount WHERE isActive = TRUE";
+        String sql = "SELECT * FROM discount WHERE is_active = TRUE";
 
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql);

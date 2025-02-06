@@ -10,21 +10,35 @@ import java.util.List;
 public class ServiceCategoryDAO {
 
     // Create: Insert a new service category
-    public boolean addServiceCategory(ServiceCategory serviceCategory) {
-        String sql = "INSERT INTO category (name) VALUES (?)";
-        
-        try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            
-            stmt.setString(1, serviceCategory.getName());
-            int rowsInserted = stmt.executeUpdate();
-            return rowsInserted > 0;
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+//    public boolean addServiceCategory(ServiceCategory serviceCategory) {
+//        String sql = "INSERT INTO category (name) VALUES (?)";
+//        
+//        try (Connection connection = DatabaseUtil.getConnection();
+//             PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            
+//            stmt.setString(1, serviceCategory.getName());
+//            int rowsInserted = stmt.executeUpdate();
+//            return rowsInserted > 0;
+//            
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+        public static boolean insertCategory(String categoryName, String imageFileName) {
+            String sql = "INSERT INTO category (name, image) VALUES (?, ?)";
+            try (Connection connection = DatabaseUtil.getConnection();
+                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                stmt.setString(1, categoryName);
+                stmt.setString(2, imageFileName);
+
+                return stmt.executeUpdate() > 0; // Returns true if insertion is successful
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
-    }
 
     // Read: Get a service category by ID
     public ServiceCategory getServiceCategoryById(int id) {
@@ -71,7 +85,7 @@ public class ServiceCategoryDAO {
     }
 
     // Update: Update a service category's name by ID
-    public boolean updateServiceCategory(int id, String newName) {
+    public static boolean updateServiceCategoryName(int id, String newName) {
         String sql = "UPDATE category SET name = ? WHERE id = ?";
         
         try (Connection connection = DatabaseUtil.getConnection();
@@ -79,6 +93,24 @@ public class ServiceCategoryDAO {
             
             stmt.setString(1, newName);
             stmt.setInt(2, id);
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public static boolean updateServiceCategoryNameAndImage(int id, String newName, String newImageName) {
+        String sql = "UPDATE category SET name = ?, image =? WHERE id = ?";
+        
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            
+            stmt.setString(1, newName);
+            stmt.setString(2, newImageName);
+            stmt.setInt(3, id);
             int rowsUpdated = stmt.executeUpdate();
             return rowsUpdated > 0;
             

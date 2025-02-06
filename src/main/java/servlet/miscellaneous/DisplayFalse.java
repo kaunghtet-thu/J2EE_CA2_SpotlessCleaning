@@ -15,7 +15,7 @@ import DB.DatabaseUtil;
 /**
  * Servlet implementation class DisplayFalse
  */
-@WebServlet("/public/DisplayFalse")
+@WebServlet("/DisplayFalse")
 public class DisplayFalse extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

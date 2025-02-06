@@ -10,7 +10,7 @@ public class FeedbackDAO {
     // Get feedback by booking ID
     public Feedback getFeedbackByBookingId(int bookingId) {
         Feedback feedback = null;
-        String sql = "SELECT * FROM feedback WHERE booking_id = ?";
+        String sql = "SELECT * FROM feedback WHERE booking_service_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
         		PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, bookingId);
@@ -18,7 +18,7 @@ public class FeedbackDAO {
             if (rs.next()) {
                 feedback = new Feedback(
                     rs.getInt("id"),
-                    rs.getInt("booking_id"),
+                    rs.getInt("booking_service_id"),
                     rs.getInt("rating"),
                     rs.getString("comments"),
                     rs.getBoolean("display")
@@ -40,7 +40,7 @@ public class FeedbackDAO {
               while (rs.next()) {
                   feedbacks.add( new Feedback(
                       rs.getInt("id"),
-                      rs.getInt("booking_id"),
+                      rs.getInt("booking_service_id"),
                       rs.getInt("rating"),
                       rs.getString("comments"),
                       rs.getBoolean("display")
@@ -74,7 +74,7 @@ public class FeedbackDAO {
 
     // creat new  feedback
     public boolean addFeedback(int bookingId, int rating, String comments) {
-        String sql = "INSERT INTO feedback (booking_id, rating, comments) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO feedback (booking_service_id, rating, comments) VALUES (?, ?, ?)";
         try (Connection connection = DatabaseUtil.getConnection();PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, bookingId);
             stmt.setInt(2, rating);
@@ -88,7 +88,7 @@ public class FeedbackDAO {
 
     // Update existing feedback
     public boolean updateFeedback(int bookingId, int rating, String comments) {
-        String sql = "UPDATE feedback SET rating = ?, comments = ? WHERE booking_id = ?";
+        String sql = "UPDATE feedback SET rating = ?, comments = ? WHERE booking_service_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, rating);
             stmt.setString(2, comments);
@@ -102,7 +102,7 @@ public class FeedbackDAO {
 
     // Delete feedback
     public boolean deleteFeedback(int booking_id) {
-        String sql = "DELETE FROM feedback WHERE booking_id = ?";
+        String sql = "DELETE FROM feedback WHERE booking_service_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, booking_id);
             return stmt.executeUpdate() > 0;
@@ -130,7 +130,7 @@ public class FeedbackDAO {
                 while (rs.next()) {
                     allFeedbacks.add(new Feedback(
                             rs.getInt("id"),
-                            rs.getInt("booking_id"),
+                            rs.getInt("booking_service_id"),
                             rs.getInt("rating"),
                             rs.getString("comments"),
                             rs.getBoolean("display")
