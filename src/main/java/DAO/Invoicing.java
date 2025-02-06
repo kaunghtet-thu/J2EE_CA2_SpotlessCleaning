@@ -115,6 +115,7 @@ public class Invoicing {
         document.add(new Paragraph("\n"));
 
         double gstAmount = totalprice * 0.09; 
+        totalprice += gstAmount;
         double discountAmount=0;
         if (invoice.getDiscount() < 1) {
         	 discountAmount = totalprice * invoice.getDiscount();
