@@ -135,7 +135,7 @@ public class Invoicing {
      summary.addCell(new Cell().add(new Paragraph("$" + String.format("%.2f", merchandizeTotalPrice))));
 
      summary.addCell(new Cell().add(new Paragraph("Original Price:")));
-     summary.addCell(new Cell().add(new Paragraph("$" + String.format("%.2f", totalprice))));
+     summary.addCell(new Cell().add(new Paragraph("$" + String.format("%.2f", serviceTotalPrice+merchandizeTotalPrice))));
 
      summary.addCell(new Cell().add(new Paragraph("GST (9%):")));
      summary.addCell(new Cell().add(new Paragraph("$" + String.format("%.2f", gstAmount))));
