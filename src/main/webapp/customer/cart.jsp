@@ -42,6 +42,7 @@
                      	 if (disDao.getDiscountStatusByServiceId(service.getId())) {
                          double discountPercent = disDao.getDiscountPercentByServiceId(service.getId());
                			 price = price * (1 - discountPercent / 100);
+               			 service.setName(service.getName() + "(" + (int)(discountPercent)+ "% OFF)");
                			 service.setPrice(price);                     	 }
                 %>
                 <tr>
