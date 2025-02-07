@@ -1,4 +1,6 @@
 <%@page import="bean.*" %><%@page import="DAO.*" %>
+<%@page import="java.util.Map" %>
+<%@page import="java.util.List" %>
 
 <!DOCTYPE html>
 <html>
@@ -7,6 +9,8 @@
     <link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/style.css">
     
     <title>SPOTLESS Cleaning Services</title>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </head>
 <body>
 <%@include file="./checkUserRole.jsp" %>
@@ -21,7 +25,8 @@
     </div>
     <div class="profile-icon">
         <% if (isMember || isAdmin || isStaff) { %>
-            <a href="profile.jsp" class="profile-button">Profile</a><br>
+            <a href="<%=request.getContextPath() %>/shared/profile.jsp" class="profile-button">Profile</a><br>
+
             <button class ="logout-button" onclick="location.href='<%=request.getContextPath() %>/customer/warningLogout.jsp'">Log out</button>
         <% } else { %>
             <button class="login-button" onclick="location.href='<%=request.getContextPath() %>/public/login.jsp'">Log in</button>

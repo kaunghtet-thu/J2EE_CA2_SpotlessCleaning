@@ -67,7 +67,7 @@ public class AddToCart extends HttpServlet {
         	
             if (alreadyInCart) {
             	String error = "Already in the cart!";
-                response.sendRedirect("./customer/services.jsp?errorMsg=" + error);
+                response.sendRedirect("./public/services.jsp?errorMsg=" + error);
                 return;
             }
 

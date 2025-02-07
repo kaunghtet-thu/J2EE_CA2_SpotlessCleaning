@@ -14,31 +14,18 @@
         padding: 10px;
     }
 
-	 table {
+	table {
         width: 100%;
         table-layout: fixed; 
         border-collapse: collapse;
-        margin: 0px;
     }
-
     th, td {
         padding: 10px;
         border: 1px solid #ddd;
         word-wrap: break-word; 
     }
-
     th {
-        background-color: #f4f4f4;
-    }
-
-    th, td {
-        padding: 10px;
-        border: 1px solid #ddd;
-        word-wrap: break-word; 
-    }
-
-    th {
-        background-color: #f4f4f4;
+        background-color: #b3dee5;
     }
     .table-container table {
         max-width: 100%;
@@ -54,18 +41,19 @@
         white-space: nowrap; 
     }
     .edit-button {
-            font-size: 14px;
-            padding: 5px 10px;
-            border: 1px solid grey;
-            background-color: #c5d1ba;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .edit-button:hover {
-            background-color: #4cae4c;
-            color: white;
-        }
-        .editErr{
+        font-size: 15px;
+	    padding: 5px 10px;
+	    background-color: #ffa101;
+	    color: white;
+	    cursor: pointer;
+	    border-radius: 5px;
+	    transition: background-color 0.3s, color 0.3s;
+     }
+     .edit-button:hover {
+        color: white;
+    	background-color: #fae6b1;
+     }
+     .editErr{
 	 	color: red;
 	    background-color: #fdecea;
 	    border: 1px solid red;
@@ -75,6 +63,8 @@
 	     background-color: #e7f9e7;
 	     border: 1px solid green;
 	  }
+	  
+
 </style>
 </head>
 <body>

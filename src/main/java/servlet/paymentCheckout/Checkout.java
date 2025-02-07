@@ -14,12 +14,13 @@ import java.util.Map;
 
 
 import DAO.BookingDAO;
-import DAO.BookingServiceDAO;
+import DAO.BookedServiceDAO;
 import DAO.MemberDAO;
 import bean.Address;
-import bean.BookingService;
+import bean.BookedService;
 import bean.Invoice;
 import bean.InvoiceItem;
+import bean.Service;
 
 
 /**
@@ -40,19 +41,28 @@ public class Checkout extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
         int memberId = (int)session.getAttribute("memberId");
-        List<BookingService> bookingServices =(List<BookingService>)session.getAttribute("bookingServices");
-        
+        List<BookedService> bookedServices =(List<BookedService>)session.getAttribute("bookingServices");
+        List<Service> cart = (List<Service>)session.getAttribute("cart");   
 		// Create the booking
 		MemberDAO memberDAO = new MemberDAO();
         BookingDAO bookingDAO = new BookingDAO();
+        
+        // create booking
         int bookingId = bookingDAO.createBooking(memberId);
         session.setAttribute("bookingId", bookingId);
         
         // Create the booking services
-        BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
-        boolean success = bookingServiceDAO.createBookingServices(bookingId, bookingServices);     
-    
+        BookedServiceDAO bookedServiceDAO = new BookedServiceDAO();
+        boolean success = bookedServiceDAO.createBookingServices(bookingId, bookedServices);     
+        boolean emptyCart = (boolean)session.getAttribute("emptyCart");
         if (success) {
+        	if(emptyCart) {
+        		cart.clear();
+        	}
+        	else {
+        		cart.removeIf(service -> service.getId() == (int)session.getAttribute("singleId"));
+        	}
+            session.setAttribute("cart", cart);
             response.sendRedirect(request.getContextPath() + "/GenerateReceipt");
         } else {
         	response.sendRedirect(request.getContextPath() + "/customer/cart.jsp?errorMsg=Booking Failed!");

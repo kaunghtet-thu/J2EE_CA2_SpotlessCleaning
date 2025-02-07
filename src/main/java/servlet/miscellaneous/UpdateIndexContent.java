@@ -11,7 +11,7 @@ import DAO.IndexDAO;
 /**
  * Servlet implementation class UpdateIndexContent
  */
-@WebServlet("/public/UpdateIndexContent")
+@WebServlet("/UpdateIndexContent")
 public class UpdateIndexContent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

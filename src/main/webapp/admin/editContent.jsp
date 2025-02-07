@@ -30,7 +30,7 @@
     <% } %>
 
     <!-- Form to handle the content update -->
-    <form action="UpdateIndexContent" method="post">
+    <form action="../UpdateIndexContent" method="post">
         <input type="hidden" name="contentId" value="<%= contentId %>">
         <input type="hidden" name="isAdmin" value="<%= isAdmin %>">
         <label for="content">Edit Content:</label><br>

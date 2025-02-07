@@ -1,16 +1,15 @@
 package bean;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class Booking {
 	private int id;
 	private int memberId;
-	private ArrayList<BookingItems> bookingItems;
+	private List<Service> bookedServices;
 	
-	public Booking(int id, int memberId, ArrayList<BookingItems> bookingItems) {
+	public Booking(int id, int memberId, List<Service> bookedServices) {
 		this.id = id;
 		this.memberId = memberId;
-		this.bookingItems = bookingItems;
+		this.bookedServices = bookedServices;
 	}
 	public int getId() {
 		return id;
@@ -18,9 +17,7 @@ public class Booking {
 	public int getMemberId() {
 		return memberId;
 	}
-	public ArrayList<BookingItems> getBookingItems() {
-		return bookingItems;
-	}
-	
-	
+	public List<Service> getBookingItems() {
+		return bookedServices;
+	}	
 }

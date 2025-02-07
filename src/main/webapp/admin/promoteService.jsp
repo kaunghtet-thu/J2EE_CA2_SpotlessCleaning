@@ -30,7 +30,6 @@
 	String serviceName ="";
 	if (serviceIdStr != null) {
 		serviceId = Integer.parseInt(serviceIdStr);
-		
 		serviceName = dao.getServiceNameById(serviceId);
 	}
 

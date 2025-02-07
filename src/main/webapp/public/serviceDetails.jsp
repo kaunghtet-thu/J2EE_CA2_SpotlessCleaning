@@ -59,6 +59,17 @@
   // Fetch service details using the service ID
   ServiceDAO serviceDao = new ServiceDAO();
   Service service = serviceDao.getServiceById(serviceId);
+  DiscountDAO disDao = new DiscountDAO();
+  List<Service> cart = (List<Service>)session.getAttribute("cart");
+  boolean isInCart = false;
+  for (Service s : cart) {
+      if (s.getId() == service.getId()) {
+          isInCart = true;
+          break;
+      }
+  }
+
+
 %>
 
 <div class="service-details">
@@ -68,18 +79,34 @@
     <div class="details">
       <h3><%= service.getName() %></h3>
       <p><strong>Description:</strong> <%= service.getDescription() %></p>
-      <p><strong>Price:</strong> $<%= service.getPrice() %></p>
+     <% if (disDao.getDiscountStatusByServiceId(serviceId)) { 
+    double originalPrice = service.getPrice();
+    double discountPercent = disDao.getDiscountPercentByServiceId(serviceId);
+    double discountedPrice = originalPrice * (1 - discountPercent / 100);
+	%>
+	    <p>
+	        <strong>Price:</strong> 
+	        <span style="text-decoration: line-through;">$<%= originalPrice %></span> 
+	        <span style="color: red;">$<%= discountedPrice %></span>
+	    </p>
+	<% } else { %>
+	    <p><strong>Price:</strong> $<%= service.getPrice() %></p>
+	<% } %>
     </div>
     <%if (isMember) { %>
     <div class="booking">
-      <form action="./bookCart.jsp" method="POST">
+      <form action="../customer/bookCart.jsp" method="POST">
         <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
         <input type="submit" value="Book Service" class="button" />
       </form>
+      <% if (isInCart) {%>
+      	<p>You have this service in your cart</p>
+      <%} else {%>
       <form action="<%= request.getContextPath()%>/AddToCart" method="POST">
         <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
         <input type="submit" value="Add to Cart" class="button" />
       </form>
+      <%} %>
     </div>
     <%} else if (isAdmin){ %>
     <div class="manage">

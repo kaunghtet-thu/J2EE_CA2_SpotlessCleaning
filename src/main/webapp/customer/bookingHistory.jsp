@@ -1,90 +1,92 @@
-<%@ page import="java.util.List" %>
-<%@ page import="bean.Service" %>
+
+<%@page import="java.util.Map" %>
+<%@page import="java.util.HashMap" %>
+<%@page import="java.util.List" %>
+<%@page import="java.util.ArrayList" %>
+<%@page import="DAO.BookedServiceDAO" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cart</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQfz6Kp06j5zSuOEPBJHRJf7j0iP4Ccm6Ksb3kzA9BvLrr6hWJj4twt3A" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IMpD2M36nB2n6zQhT7M05wD3zNzzTBTdS6k" crossorigin="anonymous"></script>
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Booking History</title>
 </head>
 <body>
-<%@include file="../assets/header.jsp" %>
+    <div class="container mt-5">
+        <h2 class="mb-4">Booking History</h2>
+        <div class="accordion" id="bookingAccordion">
+            <%
+                BookedServiceDAO dao = new BookedServiceDAO();
+                int memberId = 14; // Change this dynamically as needed
+                int completeId = 4;
+                List<Map<String, Object>> bookings = dao.getBookingsWithServicesByMember(memberId);
+                Map<Integer, List<Map<String, Object>>> groupedBookings = new HashMap<>();
+                Map<Integer, Integer> completedCount = new HashMap<>();
+                
+                for (Map<String, Object> booking : bookings) {
+                    int bookingId = (int) booking.get("booking_id");
+                    int status = (int) booking.get("status_id");
+                    groupedBookings.putIfAbsent(bookingId, new ArrayList<>());
+                    groupedBookings.get(bookingId).add(booking);
+                    
+                    completedCount.put(bookingId, completedCount.getOrDefault(bookingId, 0) + (status == completeId ? 1 : 0));
+                }
+                
+                for (Map.Entry<Integer, List<Map<String, Object>>> entry : groupedBookings.entrySet()) {
+                    int bookingId = entry.getKey();
+                    List<Map<String, Object>> services = entry.getValue();
+                    int totalServices = services.size();
+                    int completedServices = completedCount.getOrDefault(bookingId, 0);
+            %>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading<%= bookingId %>">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= bookingId %>" aria-expanded="true" aria-controls="collapse<%= bookingId %>">
+                        Booking #<%= bookingId %> - Status: <%= completedServices %>/<%= totalServices %> Completed
+                    </button>
+                </h2>
+                <div id="collapse<%= bookingId %>" class="accordion-collapse collapse show" aria-labelledby="heading<%= bookingId %>" data-bs-parent="#bookingAccordion">
+                    <div class="accordion-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+									<th style="width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Service Name</th>
+                                    <th>Booking Date</th>
+                                    <th>Booking Time</th>
+                                    <th>Status</th>
+                                    <th>Clock-in Code</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (Map<String, Object> service : services) { %>
+                                <tr>
+									<td style="width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= service.get("service_name") %></td>
 
-    <h1>Your Cart</h1>
-    
-    <%
-        // Retrieve the cart from the session
-        List<Service> cart = (List<Service>) session.getAttribute("cart");
-        if (cart == null || cart.isEmpty()) {
-    %>
-        <p class="succMsg">Your cart is empty.</p>
-    <%
-        } else {
-    %>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th width="300">Name</th>
-                    <th width="600">Description</th>
-                    <th width="80">Price</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%
-                    for (Service service : cart) {
-                %>
-                <tr>
-                    <td><%= service.getName() %></td>
-                    <td><%= service.getDescription() %></td>
-                    <td><%= service.getPrice() %></td>
-                    <td>
-                        <!-- Delete Form -->
-                        <form action="RemoveFromCart" method="POST" style="display:inline;">
-                            <input type="hidden" name="serviceId" value="<%= service.getId() %>">
-                            <button type="submit">Delete</button>
-                        </form>
-                        <%
-                        if(isPublic) {
-                        %>
-                        
-                        <form action="login.jsp" method="POST" style="display:inline;">
-                            <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
-                            <input type="hidden" name="serviceName" value="<%= service.getName() %>" />
-                            <input type="submit" value="Book" />
-                        </form>
-                        <%	
-                        } else {
-                        %>
-                        <form action="bookAService.jsp" method="POST" style="display:inline;">
-                            <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
-                            <input type="hidden" name="serviceName" value="<%= service.getName() %>" />
-					                <input type="hidden" name="servicePrice" value="<%= service.getPrice() %>" />
-                            <input type="submit" value="Book" />
-                        </form>
-                        <% }
-                        %>
-                    </td>
-                </tr>
-                <%
-                    }
-                %>
-            </tbody>
-        </table>
-        <p>Total Items: <%= cart.size() %></p>
-    <%
-        }
-    %>
-    <div class="container">
-	<form action="./services.jsp" method="get">
-	    <button type="submit">Continue Shopping</button> <br>
-	</form>
-	<form action="./bookCart.jsp" method="get">
-	    <button type="submit">Book All</button>
-	</form>
+                                    <td><%= service.get("booking_date") %></td>
+                                    <td><%= new java.text.SimpleDateFormat("h:mm a").format(service.get("booking_time")) %></td>
+                                    <%int status_id = (int)service.get("status_id"); 
+                                    	String status = dao.getStatus(status_id);
+                                    %>
+                                    <td><%= status %></td>
+                                    <td><%= service.get("clock_in_code") %></td>
+                                    <td>
+                                        <% if ((int) service.get("status_id") == completeId) { %>
+                                            <button class="btn btn-primary">Complete</button>
+                                        <% }  else { %>
+                                        <button class="btn btn-primary" disabled>Waiting Code</button>
+                                        <%} %>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
     </div>
-    <%@include file="../assets/footer.html" %>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

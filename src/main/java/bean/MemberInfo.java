@@ -9,7 +9,6 @@ public class MemberInfo extends Member {
 	
 	public MemberInfo() {
 		super();
-		email = "";
 		phone = "";	
 		address = new ArrayList<Address>();
 	}

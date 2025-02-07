@@ -10,11 +10,13 @@
 </head>
 <body>
 <%@include file="../assets/header.jsp" %>
+<link rel="stylesheet" type="text/css" href="../assets/css/cart.css">
 
     <h1>Your Cart</h1>
     
     <%
         // Retrieve the cart from the session
+        DiscountDAO disDao = new DiscountDAO();
         List<Service> cart = (List<Service>) session.getAttribute("cart");
         if (cart == null || cart.isEmpty()) {
     %>
@@ -34,14 +36,21 @@
             <tbody>
                 <%
                     for (Service service : cart) {
+                    
+                 		
+                     	 double price = service.getPrice();
+                     	 if (disDao.getDiscountStatusByServiceId(service.getId())) {
+                         double discountPercent = disDao.getDiscountPercentByServiceId(service.getId());
+               			 price = price * (1 - discountPercent / 100);
+                     	 }
                 %>
                 <tr>
                     <td><%= service.getName() %></td>
                     <td><%= service.getDescription() %></td>
-                    <td><%= service.getPrice() %></td>
+                    <td><%= price %></td>
                     <td>
                         <!-- Delete Form -->
-                        <form action="RemoveFromCart" method="POST" style="display:inline;">
+                        <form action="../RemoveFromCart" method="POST" style="display:inline;">
                             <input type="hidden" name="serviceId" value="<%= service.getId() %>">
                             <button type="submit">Delete</button>
                         </form>
@@ -49,7 +58,7 @@
                         if(isPublic) {
                         %>
                         
-                        <form action="login.jsp" method="POST" style="display:inline;">
+                        <form action="../public/login.jsp" method="POST" style="display:inline;">
                             <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
                             <input type="hidden" name="serviceName" value="<%= service.getName() %>" />
                             <input type="submit" value="Book" />
@@ -57,10 +66,11 @@
                         <%	
                         } else {
                         %>
-                        <form action="bookAService.jsp" method="POST" style="display:inline;">
+
+                        <form action="./bookCart.jsp" method="POST" style="display:inline;">
                             <input type="hidden" name="serviceId" value="<%= service.getId() %>" />
                             <input type="hidden" name="serviceName" value="<%= service.getName() %>" />
-					                <input type="hidden" name="servicePrice" value="<%= service.getPrice() %>" />
+                            <input type="hidden" name="servicePrice" value="<%= price %>" />
                             <input type="submit" value="Book" />
                         </form>
                         <% }
@@ -77,12 +87,12 @@
         }
     %>
     <div class="container">
-	<form action="../shared/services.jsp" method="get">
-	    <button type="submit">Continue Shopping</button> <br>
-	</form>
-	<form action="./bookCart.jsp" method="get">
-	    <button type="submit">Book All</button>
-	</form>
+		<form action="../public/services.jsp" method="GET">
+		    <button type="submit">Continue Shopping</button> <br>
+		</form>
+		<form action="./bookCart.jsp" method="GET">
+		    <button type="submit">Book All</button>
+		</form>
     </div>
     <%@include file="../assets/footer.html" %>
     

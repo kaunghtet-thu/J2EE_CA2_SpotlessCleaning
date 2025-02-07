@@ -14,9 +14,10 @@
     overflow-x: auto;
     gap: 20px;
     padding: 20px;
+    width: 60vw;
   }
   .category-card-wrapper {
-    min-width: 300px;
+    
     flex-shrink: 0;
   }
   .category-card {
@@ -50,19 +51,21 @@
 %>
     <div class="category-card-wrapper">
       <div class="category-card" id="addNewCat">
-        <form action="UpdateCategory" method="post" enctype="multipart/form-data">
+        <form action="../UpdateCategory" method="post" enctype="multipart/form-data">
           <!-- Hidden field for categoryId -->
-          <input type="hidden" name="categoryId" value="<%= categoryId %>">
+          <input type="hidden" name="categoryId" id="categoryId" value="<%= categoryId %>">
 
           <!-- Display current category name in an editable text field -->
           <label for="serviceCategory">Category Name:</label>
           <input type="text" id="serviceCategory" name="serviceCategory" value="<%= category.getName() %>" required><br>
 
-          <!-- Display current image as a static image -->
           <label>Current Image:</label><br>
-          <img src="images/<%= category.getImage() %>" alt="Current Category Image" class="current-image"><br>
+         <img src="../assets/images/<%= category.getImage() %>"
+                             alt="<%= category.getName() %>"
+                             width="100"
+                             height="100"
+                             onerror="this.onerror=null; this.src='../assets/images/default.png';" /><br>
 
-          <!-- Optional file upload for new image -->
           <label for="categoryImage">Upload New Image (optional):</label>
           <input type="file" id="categoryImage" name="categoryImage"><br><br>
 
