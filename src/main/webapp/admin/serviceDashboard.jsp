@@ -75,10 +75,6 @@
         width: 100vw;
         margin: 0 auto;
     }
-    .col1 { width: 10%; }
-  	.col2 { width: 20%; }
-  	.col3 { width: 30%; }
-
     .left-col {
     width: 25%;
     padding: 20px;
@@ -170,11 +166,11 @@ if (isAdmin) {
     <div class="table-container">
         <table>
             <colgroup>
-                <col style="width: 10%;"> <!-- Service ID column (1) -->
-                <col style="width: 40%;"> <!-- Service Name column (4) -->
-                <col style="width: 10%;"> <!-- Booking Count column (1) -->
-                <col style="width: 10%;"> <!-- Average Rating column (1) -->
-                <col style="width: 20%;"> <!-- Manage column (2) -->
+                <col style="width: 10%;"> 
+                <col style="width: 40%;">
+                <col style="width: 10%;"> 
+                <col style="width: 10%;"> 
+                <col style="width: 20%;"> 
             </colgroup>
             <thead>
                 <tr>

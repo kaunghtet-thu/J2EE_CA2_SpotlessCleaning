@@ -35,20 +35,28 @@
 
 <nav>
     <ul>
+    	<%if (!isStaff) { %>
         <li><a href="<%=request.getContextPath() %>/index.jsp">Home</a></li>
         <li><a href="<%=request.getContextPath() %>/public/services.jsp">Services</a></li>
+        <%} %>
         <% if (isAdmin) { %>
         	  <li><a href="<%=request.getContextPath() %>/admin/serviceDashboard.jsp">Service Dashboard</a></li>
         <% }if (isMember){
         %>	       
         <li><a href="<%=request.getContextPath() %>/customer/cart.jsp">Cart</a></li>
         <li><a href="<%=request.getContextPath() %>/customer/bookingHistory.jsp">Booking History</a></li>
+       
+        <% } if (isAdmin || isMember) {%>
         <li><a href="<%=request.getContextPath() %>/shared/applyForStaff.jsp">Career Opportunities</a></li>
-        <% } %>
+        <%} %>
         <% if (isAdmin){ %>	
         <li><a href="<%=request.getContextPath() %>/admin/displayAllMembers.jsp">Members</a></li>
         <li><a href="<%=request.getContextPath() %>/admin/feedback.jsp">Feedback History</a></li>
         <% } %>
+        <%if (isStaff){ %>
+        <li><a href="<%=request.getContextPath() %>/staff/availableJobs.jsp">Available Jobs</a></li>
+        <li><a href="<%=request.getContextPath() %>/staff/acceptedJobs.jsp">Accepted Jobs</a></li>
+        <%} %>
       
     </ul>
 </nav>

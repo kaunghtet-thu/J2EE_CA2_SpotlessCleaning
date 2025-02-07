@@ -126,3 +126,31 @@ BEGIN
     -- Execute the dynamic query
     RETURN QUERY EXECUTE dynamic_query;
 END $$;
+
+
+################################################################
+Get pending member for admin CA2
+################################################################
+CREATE OR REPLACE FUNCTION get_pending_applicants()
+RETURNS TABLE (
+    member_id INT,
+    member_name VARCHAR(100),
+    role INT,
+    application_id INT,
+    agree BOOLEAN,
+    approve BOOLEAN
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        a.member_id,
+        m.name,
+        m.role_id,
+        a.id,
+        a.agree,
+        a.approve
+    FROM applicant a
+    JOIN member m ON m.id = a.member_id
+    WHERE a.approve is null;
+END;
+$$ LANGUAGE plpgsql;
