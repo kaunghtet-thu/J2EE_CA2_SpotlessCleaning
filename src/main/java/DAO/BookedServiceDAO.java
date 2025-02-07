@@ -45,7 +45,7 @@ public class BookedServiceDAO {
 	
 	// Create: Add new booking services
 	public boolean createBookingServices(int bookingId, List<BookedService> services) {
-	    String sql = "INSERT INTO booking_service (booking_id, service_id, booking_date, booking_time, address_id, code) VALUES (?, ?, ?, ?, ?, ?)";
+	    String sql = "INSERT INTO booking_service (booking_id, service_id, booking_date, booking_time, address_id, code, preferred_gender) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	    try (Connection connection = DatabaseUtil.getConnection();
 	         PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -57,7 +57,8 @@ public class BookedServiceDAO {
 	            stmt.setDate(3, Date.valueOf(service.getBookingDate()));
 	            stmt.setTime(4, Time.valueOf(service.getBookingTime()));
 	            stmt.setInt(5, service.getAddressId());
-	            stmt.setObject(6, service.getCode()); 
+	            stmt.setInt(6, service.getCode()); 
+	            stmt.setString(7, service.getPreferredGender()); 
 	            stmt.addBatch();
 	        }
 

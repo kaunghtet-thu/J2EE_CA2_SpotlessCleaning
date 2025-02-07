@@ -89,13 +89,18 @@ public class SaveCheckoutData extends HttpServlet {
                     time = timeParam;
                 }
             }
+            
+            // gender
+            String gender = request.getParameter("serviceGender_" + serviceId);
+            
+
 
             if (date != null && !date.isEmpty() && time != null && !time.isEmpty()) {
                 LocalDate serviceDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 LocalTime serviceTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
                 Random random = new Random();
-                int uniqueCode = random.nextInt(900000) + 100000; // 6-digit number
-                BookedService bookingService = new BookedService(serviceId, addressId, serviceDate, serviceTime, uniqueCode);
+                int uniqueCode = random.nextInt(900000) + 100000; // 6-digit number 
+                BookedService bookingService = new BookedService(serviceId, addressId, serviceDate, serviceTime, uniqueCode, gender);
                 bookingServices.add(bookingService);
 
 //                Service iService = serviceDAO.getServiceById(serviceId);

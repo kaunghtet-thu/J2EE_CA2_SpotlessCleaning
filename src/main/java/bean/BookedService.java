@@ -12,7 +12,7 @@ public class BookedService {
     private int statusId;
     private int staffId;
     private int code;
-    private char preferredGender;
+    private String preferredGender;
     private String serviceName;
     private LocalDate bookingDate;
     private LocalTime bookingTime;
@@ -28,12 +28,13 @@ public class BookedService {
     }
 
 
-	public BookedService(int serviceId2, Integer addressId2, LocalDate serviceDate, LocalTime serviceTime, int code) {
+	public BookedService(int serviceId2, Integer addressId2, LocalDate serviceDate, LocalTime serviceTime, int code, String gender) {
 		this.serviceId = serviceId2;
 		this.addressId = addressId2;
 		this.bookingDate = serviceDate;
 		this.bookingTime = serviceTime;
 		this.code = code;
+		this.preferredGender = gender;
 	}
 
 	public int getId() {
@@ -78,11 +79,11 @@ public class BookedService {
 		this.statusId = statusId;
 	}
 
-	public char getPreferredGender() {
+	public String getPreferredGender() {
 		return preferredGender;
 	}
 
-	public void setPreferredGender(char preferredGender) {
+	public void setPreferredGender(String preferredGender) {
 		this.preferredGender = preferredGender;
 	}
 
