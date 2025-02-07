@@ -1,4 +1,6 @@
 <%@page import="bean.*" %><%@page import="DAO.*" %>
+<%@page import="java.util.Map" %>
+<%@page import="java.util.List" %>
 
 <!DOCTYPE html>
 <html>

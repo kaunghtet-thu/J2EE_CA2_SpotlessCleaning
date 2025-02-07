@@ -5,6 +5,7 @@ public class Member {
 	private int id;
 	private String name;
 	private int role;
+	private char gender;
 	
 	public Member() {
 		this.id = 0;
@@ -26,7 +27,9 @@ public class Member {
 		return role;
 	}
 
-
+	public char getGender() {
+		return gender;
+	}
 
 	
 }

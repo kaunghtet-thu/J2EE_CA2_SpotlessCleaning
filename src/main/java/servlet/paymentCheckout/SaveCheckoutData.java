@@ -1,30 +1,27 @@
 package servlet.paymentCheckout;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import DAO.MemberDAO;
 import DAO.ServiceDAO;
-import bean.BookingService;
+import bean.Address;
+import bean.BookedService;
 import bean.Invoice;
 import bean.InvoiceItem;
 import bean.Service;
 import bean.ServiceInvoiceItem;
-import bean.Address;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/SaveCheckoutData")
 public class SaveCheckoutData extends HttpServlet {
@@ -55,7 +52,7 @@ public class SaveCheckoutData extends HttpServlet {
         boolean differentTimes = request.getParameter("differentTimes") != null;
 
         List<Service> cart = (List<Service>) session.getAttribute("cart");
-        List<BookingService> bookingServices = new ArrayList<>();
+        List<BookedService> bookingServices = new ArrayList<>();
         List<InvoiceItem> invoiceItems = new ArrayList<>();
 
         for (Service service : cart) {
@@ -94,12 +91,7 @@ public class SaveCheckoutData extends HttpServlet {
                 LocalDate serviceDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 LocalTime serviceTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
 
-                BookingService bookingService = new BookingService();
-                bookingService.setServiceId(serviceId);
-                bookingService.setQuantity(1);
-                bookingService.setAddressId(addressId);
-                bookingService.setBookingDate(serviceDate);
-                bookingService.setBookingTime(serviceTime);
+                BookedService bookingService = new BookedService(serviceId, addressId, serviceDate, serviceTime);
                 bookingServices.add(bookingService);
 
 //                Service iService = serviceDAO.getServiceById(serviceId);
