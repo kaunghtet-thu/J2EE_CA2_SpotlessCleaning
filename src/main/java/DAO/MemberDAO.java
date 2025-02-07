@@ -43,32 +43,63 @@ public class MemberDAO {
 	//======================================
 	// CREATE
 	//======================================
-	public Member createMember(String name, String email, String hashedPassword, String phone) {
-	    String sql = String.format("INSERT INTO %s (name, email, password, phone, role_id) VALUES (?, ?, ?, ?, 2)", this.tableName);
+	public Member createMember(String name, String email, String hashedPassword, String phone, char gender) {
+		String sql="";
+		if (gender == ' ') {
+		     sql = String.format("INSERT INTO %s (name, email, password, phone, role_id) VALUES (?, ?, ?, ?, 2)", this.tableName);
+		     try (Connection connection = DatabaseUtil.getConnection();
+			         PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-	    try (Connection connection = DatabaseUtil.getConnection();
-	         PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			        stmt.setString(1, name);
+			        stmt.setString(2, email);
+			        stmt.setString(3, hashedPassword);
+			        stmt.setString(4, phone);
+			      
 
-	        stmt.setString(1, name);
-	        stmt.setString(2, email);
-	        stmt.setString(3, hashedPassword);
-	        stmt.setString(4, phone);
+			        int rowsAffected = stmt.executeUpdate();
 
-	        int rowsAffected = stmt.executeUpdate();
+			        // Check if a row was inserted
+			        if (rowsAffected > 0) {
+			            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+			                if (generatedKeys.next()) {
+			                    int id = generatedKeys.getInt(1);  
+			                    return new Member(id, name, 1);
+			                }
+			            }
+			        }
 
-	        // Check if a row was inserted
-	        if (rowsAffected > 0) {
-	            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-	                if (generatedKeys.next()) {
-	                    int id = generatedKeys.getInt(1);  
-	                    return new Member(id, name, 1);
-	                }
-	            }
-	        }
+			    } catch (SQLException e) {
+			        System.err.println("Error while creating member: " + e.getMessage());
+			    }
+		} else {
+	     sql = String.format("INSERT INTO %s (name, email, password, phone, role_id, gender) VALUES (?, ?, ?, ?, 2, ?)", this.tableName);
+	     try (Connection connection = DatabaseUtil.getConnection();
+		         PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-	    } catch (SQLException e) {
-	        System.err.println("Error while creating member: " + e.getMessage());
-	    }
+		        stmt.setString(1, name);
+		        stmt.setString(2, email);
+		        stmt.setString(3, hashedPassword);
+		        stmt.setString(4, phone);
+		        stmt.setString(5, String.valueOf(gender));
+
+		        int rowsAffected = stmt.executeUpdate();
+
+		        // Check if a row was inserted
+		        if (rowsAffected > 0) {
+		            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+		                if (generatedKeys.next()) {
+		                    int id = generatedKeys.getInt(1);  
+		                    return new Member(id, name, 1);
+		                }
+		            }
+		        }
+
+		    } catch (SQLException e) {
+		        System.err.println("Error while creating member: " + e.getMessage());
+		    }
+		}
+
+	   
 
 	    return null;
 	}
@@ -168,7 +199,7 @@ public class MemberDAO {
 	
 	public MemberInfo getMemberDetail(int id) {
 	    String sql = String.format("SELECT m.id AS member_id, m.name, m.role_id, m.email, m.phone, " +
-	                               "a.id AS address_id, a.address " +
+	                               "a.id AS address_id, a.address, m.gender " + // Added gender column
 	                               "FROM %s m LEFT JOIN %s a ON m.id = a.member_id WHERE m.id = ?", 
 	                               this.tableName, TABLENAME2);
 
@@ -183,12 +214,17 @@ public class MemberDAO {
 
 	        while (rs.next()) {
 	            if (member == null) {
-	                // Initialize member info on the first result
+	             
 	                String name = rs.getString("name");
 	                int roleId = rs.getInt("role_id");
 	                String email = rs.getString("email");
 	                String phone = rs.getString("phone");
-	                member = new MemberInfo(id, name, roleId, email, phone, addresses);
+	                String genderString = rs.getString("gender"); 
+	                char gender = ' '; 
+	                if (genderString != null && genderString.length() > 0) {
+	                    gender = genderString.charAt(0); 
+	                }
+	                member = new MemberInfo(id, name, roleId, email, phone, addresses, gender);
 	            }
 
 	            // Add address if available
@@ -202,10 +238,12 @@ public class MemberDAO {
 	        return member;
 
 	    } catch (SQLException e) {
+	        // Log or rethrow the exception for proper handling
 	        e.printStackTrace();
 	    }
 	    return null;
 	}
+
 	
 	public ArrayList<MemberInfo> getAllMemberDetails(boolean isAdmin) {
 	    ArrayList<MemberInfo> members = new ArrayList<MemberInfo>();
@@ -223,6 +261,8 @@ public class MemberDAO {
 	                int role_id = rs.getInt("role_id");
 	                String email = rs.getString("email");
 	                String phone = rs.getString("phone");
+	                String genderString = rs.getString("gender"); 
+	                char gender = (genderString != null && genderString.length() > 0) ? genderString.charAt(0) : ' '; 
 
 	                ArrayList<Address> address = new ArrayList<Address>();
 	                String sql2 = String.format("SELECT * FROM %s WHERE member_id = ?", TABLENAME2);
@@ -241,7 +281,7 @@ public class MemberDAO {
 	                    }
 	                }
 
-	                MemberInfo member = new MemberInfo(id, name, role_id, email, phone, address);
+	                MemberInfo member = new MemberInfo(id, name, role_id, email, phone, address, gender);
 	                members.add(member);
 	            }
 

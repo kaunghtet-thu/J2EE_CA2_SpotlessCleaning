@@ -185,7 +185,11 @@
 		<div class="editSuccess">
 			<p>Editing the selected field successful</p>
 		</div>
-		<%} %>
+		<%}
+		if (isStaff) {
+			  response.sendRedirect("./staff/availableJobs.jsp");
+		} else {
+		%>
 
 <div class="container">
 <h1>
@@ -359,7 +363,7 @@
 	</div>
 	   
 <%	   
-   }
+   }}
 %>
     
 </div>

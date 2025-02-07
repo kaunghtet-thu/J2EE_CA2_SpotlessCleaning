@@ -36,15 +36,15 @@
         }
 
         .register-card button {
-            background-color: #c5d1ba;
-            color: #000;
+            background-color:#31525b;
+            color: white;
             border: none;
             cursor: pointer;
         }
 
         .register-card button:hover {
-            color: white;
-            background-color: #4cae4c;
+            color: black;
+            background-color: #497C85;
         }
 
         .links {
@@ -77,11 +77,17 @@
     <div class="container">
         <div class="register-card">
             <h2>Create an account</h2>
-            <form action="Register" method="post">
+            <form action="../Register" method="post">
                 <input type="text" name="name" placeholder="Full Name" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <input type="tel" name="phone" placeholder="Phone Number" required pattern="[0-9]{8}">
+                <label for="gender">Gender</label>
+				    <select name="gender" id="gender">
+				        <option value="male">Male</option>
+				        <option value="female">Female</option>
+				        <option value="rather-not-say">Rather not to say</option>
+				    </select>
                 <button type="submit">Register</button>
             </form>
             <div class="links">

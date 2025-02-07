@@ -62,11 +62,6 @@
 <body>
 <%@include file="../assets/header.jsp" %>
 
-<% if (successMessage != null && successMessage.equals("Registration successful, please login.")) { %>
-    <div class="editSuccess">
-        <%= successMessage %>
-    </div>
-<% } %>
     <div class="container">
         <div class="login-card">
             <h2>Login to your account</h2>

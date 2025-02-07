@@ -176,6 +176,7 @@
 </table>
 
 <p>Staff list</p>
+
 </div>
 	
 <%}else { %>
