@@ -18,11 +18,13 @@
     <div class="container mt-5">
         <h2 class="mb-4">Accepted Jobs</h2>
         <div class="accordion" id="bookingAccordion">
-            <%
+            <%	
+            	int memberId = (int)session.getAttribute("memberId");
                 BookedServiceDAO dao = new BookedServiceDAO();
                 ServiceDAO serviceDAO = new ServiceDAO();
                 int completeId = 4;
-                List<BookedService> services = dao.getAllBookedServices();
+                //List<BookedService> services = dao.getAllBookedServices();
+                List<BookedService> services = dao.getAllBookedServicesByStaffId(memberId);
                 System.out.println("ziee: " + services.size());
             %>
             

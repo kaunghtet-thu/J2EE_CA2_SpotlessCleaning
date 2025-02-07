@@ -107,6 +107,36 @@ public class BookedServiceDAO {
         }
         return bookedServices;
     }
+    // Read: Get all booking services for staff id
+    public List<BookedService> getAllBookedServicesByStaffId(int id) {
+    	List<BookedService> bookedServices = new ArrayList<>();
+    	String sql = "SELECT * FROM booking_service where staff_id = ?";
+    	
+    	try (Connection connection = DatabaseUtil.getConnection();
+    			PreparedStatement stmt = connection.prepareStatement(sql)) {
+    		
+    			stmt.setInt(1, id);
+    		try (ResultSet rs = stmt.executeQuery()) {
+    			while (rs.next()) {
+    				BookedService service = new BookedService(
+    						rs.getInt("id"),
+    						rs.getInt("booking_id"),
+    						rs.getInt("service_id"),
+    						rs.getDate("booking_date").toLocalDate(),
+    						rs.getTime("booking_time").toLocalTime(),
+    						rs.getInt("staff_id"),
+    						rs.getInt("address_id")
+    						);
+    				bookedServices.add(service);
+    			}
+    		}
+    	} catch (SQLException e) {
+    		// Log the exception (Optional)
+    		System.err.println("Error while fetching booking services: ");
+    		e.printStackTrace();
+    	}
+    	return bookedServices;
+    }
     // Read: Get all booking services for a booking
     public List<BookedService> getBookingServicesByBookingId(int bookingId) {
         List<BookedService> bookedServices = new ArrayList<>();
