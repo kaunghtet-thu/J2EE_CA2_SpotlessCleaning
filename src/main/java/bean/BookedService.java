@@ -11,6 +11,7 @@ public class BookedService {
     private int addressId;
     private int statusId;
     private int staffId;
+    private int code;
     private char preferredGender;
     private String serviceName;
     private LocalDate bookingDate;
@@ -27,11 +28,12 @@ public class BookedService {
     }
 
 
-	public BookedService(int serviceId2, Integer addressId2, LocalDate serviceDate, LocalTime serviceTime) {
+	public BookedService(int serviceId2, Integer addressId2, LocalDate serviceDate, LocalTime serviceTime, int code) {
 		this.serviceId = serviceId2;
 		this.addressId = addressId2;
 		this.bookingDate = serviceDate;
 		this.bookingTime = serviceTime;
+		this.code = code;
 	}
 
 	public int getId() {
@@ -119,4 +121,14 @@ public class BookedService {
     public void setAddressId(int addressId) {
         this.addressId = addressId;
     }
+
+
+	public int getCode() {
+		return code;
+	}
+
+
+	public void setCode(int code) {
+		this.code = code;
+	}
 }

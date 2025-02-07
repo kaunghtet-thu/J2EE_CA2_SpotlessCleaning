@@ -1,12 +1,15 @@
 package servlet.paymentCheckout;
 
 import java.io.IOException;
+import java.util.Random;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import DAO.MemberDAO;
 import DAO.ServiceDAO;
@@ -90,8 +93,9 @@ public class SaveCheckoutData extends HttpServlet {
             if (date != null && !date.isEmpty() && time != null && !time.isEmpty()) {
                 LocalDate serviceDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 LocalTime serviceTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
-
-                BookedService bookingService = new BookedService(serviceId, addressId, serviceDate, serviceTime);
+                Random random = new Random();
+                int uniqueCode = random.nextInt(900000) + 100000; // 6-digit number
+                BookedService bookingService = new BookedService(serviceId, addressId, serviceDate, serviceTime, uniqueCode);
                 bookingServices.add(bookingService);
 
 //                Service iService = serviceDAO.getServiceById(serviceId);
@@ -106,6 +110,7 @@ public class SaveCheckoutData extends HttpServlet {
                 System.out.println("Invalid date or time for service ID: " + serviceId);
             }
         }
+        
 
         Invoice invoice = new Invoice(memberDAO.getMemberName(memberId), LocalDateTime.now(), invoiceItems);
         String totalAmount = request.getParameter("totalAmount");

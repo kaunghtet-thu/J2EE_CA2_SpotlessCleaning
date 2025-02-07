@@ -45,7 +45,7 @@ public class BookedServiceDAO {
 	
 	// Create: Add new booking services
 	public boolean createBookingServices(int bookingId, List<BookedService> services) {
-	    String sql = "INSERT INTO booking_service (booking_id, service_id, booking_date, booking_time, staff_id, address_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	    String sql = "INSERT INTO booking_service (booking_id, service_id, booking_date, booking_time, address_id, code) VALUES (?, ?, ?, ?, ?, ?)";
 	    try (Connection connection = DatabaseUtil.getConnection();
 	         PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -56,8 +56,8 @@ public class BookedServiceDAO {
 	            stmt.setInt(2, service.getServiceId());
 	            stmt.setDate(3, Date.valueOf(service.getBookingDate()));
 	            stmt.setTime(4, Time.valueOf(service.getBookingTime()));
-	            stmt.setObject(5, service.getStaffId(), Types.INTEGER); // Handle optional field
-	            stmt.setInt(6, service.getAddressId());
+	            stmt.setInt(5, service.getAddressId());
+	            stmt.setObject(6, service.getCode()); 
 	            stmt.addBatch();
 	        }
 
@@ -77,7 +77,36 @@ public class BookedServiceDAO {
 	        return false;
 	    }
 	}
+	// Read: Get all booking services for staff
+    public List<BookedService> getAllBookedServices() {
+        List<BookedService> bookedServices = new ArrayList<>();
+        String sql = "SELECT * FROM booking_service";
 
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    BookedService service = new BookedService(
+                            rs.getInt("id"),
+                            rs.getInt("booking_id"),
+                            rs.getInt("service_id"),
+                            rs.getDate("booking_date").toLocalDate(),
+                            rs.getTime("booking_time").toLocalTime(),
+                            rs.getInt("staff_id"),
+                            rs.getInt("address_id")
+                    );
+                    bookedServices.add(service);
+                }
+            }
+        } catch (SQLException e) {
+            // Log the exception (Optional)
+            System.err.println("Error while fetching booking services: ");
+            e.printStackTrace();
+        }
+        return bookedServices;
+    }
     // Read: Get all booking services for a booking
     public List<BookedService> getBookingServicesByBookingId(int bookingId) {
         List<BookedService> bookedServices = new ArrayList<>();
@@ -96,7 +125,7 @@ public class BookedServiceDAO {
                             rs.getInt("service_id"),
                             rs.getDate("booking_date").toLocalDate(),
                             rs.getTime("booking_time").toLocalTime(),
-                            rs.getObject("staff_id", Integer.class), // Handle optional field
+                            rs.getInt("staff_id"),
                             rs.getInt("address_id")
                     );
                     bookedServices.add(service);
@@ -135,5 +164,41 @@ public class BookedServiceDAO {
                e.printStackTrace();
            }
            return "N/A";
+    }
+    //verify code
+    public boolean verifyCode(int bookingId, int serviceId, int clockInCode) {
+    	String sql = "SELECT * FROM booking_service WHERE booking_id = ? AND service_id = ? AND code = ?";
+    	try (Connection connection = DatabaseUtil.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+               stmt.setInt(1, bookingId);
+               stmt.setInt(2, serviceId);
+               stmt.setInt(3, clockInCode);
+
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                      
+	            	   String sql2 = "update booking_service set status_id = ? where booking_id = ? and service_id = ?";
+	            	   PreparedStatement stmt2 = connection.prepareStatement(sql2);
+	
+	                       stmt2.setInt(1, 2);
+	                       stmt2.setInt(2, bookingId);
+	                       stmt2.setInt(3, serviceId);
+	
+	                       int rows = stmt2.executeUpdate();
+	                       if(rows > 1)
+	                    	   return true;                              
+	                            	                                     
+                   }
+               }
+               
+            	   
+                   
+           } catch (SQLException e) {
+               // Log the exception (Optional)
+               System.err.println("Error while verifying code " + clockInCode);
+               e.printStackTrace();
+           }
+           return false;
     }
 }
