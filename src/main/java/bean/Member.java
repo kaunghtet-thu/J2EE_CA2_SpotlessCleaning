@@ -24,9 +24,5 @@ public class Member {
 	}
 	public int getRole() {
 		return role;
-	}
-
-
-
-	
+	}	
 }

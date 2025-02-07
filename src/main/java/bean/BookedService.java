@@ -2,33 +2,42 @@ package bean;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
-public class BookingService {
+public class BookedService {
     private int id;
     private int bookingId;
     private int serviceId;
-    private int quantity;
+    private int addressId;
+    private int statusId;
+    private int staffId;
+    private int code;
+    private String preferredGender;
+    private String serviceName;
     private LocalDate bookingDate;
     private LocalTime bookingTime;
-    private int staffId; // Nullable field
-    private int addressId;
 
-    public BookingService() {
-      
-    }
-
-	public BookingService(int id, int bookingId, int serviceId, int quantity, LocalDate bookingDate, LocalTime bookingTime, int staffId, int addressId) {
+	public BookedService(int id, int bookingId, int serviceId, LocalDate bookingDate, LocalTime bookingTime, int staffId, int addressId) {
         this.id = id;
         this.bookingId = bookingId;
         this.serviceId = serviceId;
-        this.quantity = quantity;
         this.bookingDate = bookingDate;
         this.bookingTime = bookingTime;
         this.staffId = staffId;
         this.addressId = addressId;
     }
 
-    public int getId() {
+
+	public BookedService(int serviceId2, Integer addressId2, LocalDate serviceDate, LocalTime serviceTime, int code, String gender) {
+		this.serviceId = serviceId2;
+		this.addressId = addressId2;
+		this.bookingDate = serviceDate;
+		this.bookingTime = serviceTime;
+		this.code = code;
+		this.preferredGender = gender;
+	}
+
+	public int getId() {
         return id;
     }
 
@@ -36,7 +45,15 @@ public class BookingService {
         this.id = id;
     }
 
-    public int getBookingId() {
+    public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public int getBookingId() {
         return bookingId;
     }
 
@@ -52,15 +69,29 @@ public class BookingService {
         this.serviceId = serviceId;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
-    public LocalDate getBookingDate() {
+    public int getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(int statusId) {
+		this.statusId = statusId;
+	}
+
+	public String getPreferredGender() {
+		return preferredGender;
+	}
+
+	public void setPreferredGender(String preferredGender) {
+		this.preferredGender = preferredGender;
+	}
+
+	public void setStaffId(int staffId) {
+		this.staffId = staffId;
+	}
+
+	public LocalDate getBookingDate() {
         return bookingDate;
     }
 
@@ -91,4 +122,14 @@ public class BookingService {
     public void setAddressId(int addressId) {
         this.addressId = addressId;
     }
+
+
+	public int getCode() {
+		return code;
+	}
+
+
+	public void setCode(int code) {
+		this.code = code;
+	}
 }

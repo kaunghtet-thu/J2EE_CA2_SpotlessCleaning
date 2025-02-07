@@ -1,30 +1,30 @@
 package servlet.paymentCheckout;
 
+import java.io.IOException;
+import java.util.Random;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import DAO.MemberDAO;
+import DAO.ServiceDAO;
+import bean.Address;
+import bean.BookedService;
+import bean.Invoice;
+import bean.InvoiceItem;
+import bean.Service;
+import bean.ServiceInvoiceItem;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import DAO.MemberDAO;
-import DAO.ServiceDAO;
-import bean.BookingService;
-import bean.Invoice;
-import bean.InvoiceItem;
-import bean.Service;
-import bean.ServiceInvoiceItem;
-import bean.Address;
 
 @WebServlet("/SaveCheckoutData")
 public class SaveCheckoutData extends HttpServlet {
@@ -55,7 +55,7 @@ public class SaveCheckoutData extends HttpServlet {
         boolean differentTimes = request.getParameter("differentTimes") != null;
 
         List<Service> cart = (List<Service>) session.getAttribute("cart");
-        List<BookingService> bookingServices = new ArrayList<>();
+        List<BookedService> bookingServices = new ArrayList<>();
         List<InvoiceItem> invoiceItems = new ArrayList<>();
 
         for (Service service : cart) {
@@ -89,17 +89,18 @@ public class SaveCheckoutData extends HttpServlet {
                     time = timeParam;
                 }
             }
+            
+            // gender
+            String gender = request.getParameter("serviceGender_" + serviceId);
+            
+
 
             if (date != null && !date.isEmpty() && time != null && !time.isEmpty()) {
                 LocalDate serviceDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 LocalTime serviceTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
-
-                BookingService bookingService = new BookingService();
-                bookingService.setServiceId(serviceId);
-                bookingService.setQuantity(1);
-                bookingService.setAddressId(addressId);
-                bookingService.setBookingDate(serviceDate);
-                bookingService.setBookingTime(serviceTime);
+                Random random = new Random();
+                int uniqueCode = random.nextInt(900000) + 100000; // 6-digit number 
+                BookedService bookingService = new BookedService(serviceId, addressId, serviceDate, serviceTime, uniqueCode, gender);
                 bookingServices.add(bookingService);
 
 //                Service iService = serviceDAO.getServiceById(serviceId);
@@ -114,6 +115,7 @@ public class SaveCheckoutData extends HttpServlet {
                 System.out.println("Invalid date or time for service ID: " + serviceId);
             }
         }
+        
 
         Invoice invoice = new Invoice(memberDAO.getMemberName(memberId), LocalDateTime.now(), invoiceItems);
         String totalAmount = request.getParameter("totalAmount");
