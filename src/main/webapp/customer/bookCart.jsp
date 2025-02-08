@@ -82,6 +82,8 @@
 <div id="card" class="d-flex flex-column">
     <div style="align-self: center; text-align: left;">
         <%@include file="../customer/newAddress.jsp" %>
+        
+        
         <form id="booking-form" action="<%= request.getContextPath() %>/SaveCheckoutData" method="POST" class="d-flex flex-column">
             <input type="hidden" name="memberId" value="<%= memberId %>">
             
