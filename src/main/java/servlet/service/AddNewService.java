@@ -42,13 +42,12 @@ public class AddNewService extends HttpServlet {
 		String name = request.getParameter("serviceName");
         String description = request.getParameter("serviceDescription");
         double price = Double.parseDouble(request.getParameter("servicePrice"));
-        String image = request.getParameter("image");
         String catId = request.getParameter("categoryId");
         Integer categoryId = Integer.parseInt(catId);
         
 
         // Save service to database
-        Service newService = new Service(name, description, categoryId, price, image);
+        Service newService = new Service(name, description, categoryId, price);
         ServiceDAO serviceDao = new ServiceDAO();
         boolean added = serviceDao.addService(newService);
         if(added)

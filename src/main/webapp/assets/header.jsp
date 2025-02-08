@@ -52,6 +52,7 @@
         <li><a href="<%=request.getContextPath() %>/shared/applyForStaff.jsp">Career Opportunities</a></li>
         <%} %>
         <% if (isAdmin){ %>	
+        <li><a href="<%=request.getContextPath() %>/admin/spotifact.jsp">Spotifact</a></li>
         <li><a href="<%=request.getContextPath() %>/admin/displayAllMembers.jsp">Members</a></li>
         <li><a href="<%=request.getContextPath() %>/admin/feedback.jsp">Feedback History</a></li>
         <% } %>
