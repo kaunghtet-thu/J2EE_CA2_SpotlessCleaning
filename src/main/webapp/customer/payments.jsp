@@ -38,10 +38,16 @@
 
 <body id="center" class="d-flex align-items-center">
 <%
-    String totalStr = request.getParameter("total");
+//String totalStr = request.getParameter("total");
+//String mTotalStr = request.getParameter("merchandizeTotal");
+
+String finalGrandTotal = (String)session.getAttribute("finalGrandTotal");
+
+System.out.println("Sum as String: " + finalGrandTotal);
+
 %>
 	<div>
-    	<p>Total Amount: <%= totalStr != null ? totalStr : "N/A" %></p>
+    	<p>Total Amount: <%= finalGrandTotal != null ? finalGrandTotal : "N/A" %></p>
 	</div>
     
 	<div id="container">
@@ -56,7 +62,7 @@ const endpoint = `${baseUrl}<%= request.getContextPath() %>/StripeAPI`;
 console.log(endpoint);
 
 document.getElementById('checkout-button').addEventListener('click', () => {
-    const totalAmount = '<%= totalStr %>'; // Example total amount
+    const totalAmount = '<%= finalGrandTotal %>'; // Example total amount
 	console.log(totalAmount)
 	
     const formData = new URLSearchParams();

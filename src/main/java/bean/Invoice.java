@@ -36,6 +36,10 @@ public class Invoice {
 		return bookingId;
 	}
 
+	public void setInvoiceItem(List<InvoiceItem> invoiceItem) {
+		this.invoiceItem = invoiceItem;
+	}
+
 	public String getCustomerName() {
 		return customerName;
 	}
