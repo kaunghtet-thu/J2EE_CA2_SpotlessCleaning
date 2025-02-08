@@ -1,3 +1,4 @@
+<%@include file="../assets/header.jsp" %>
 
 <%@page import="java.util.Map" %>
 <%@page import="java.util.HashMap" %>
@@ -19,6 +20,7 @@
             <%
                 BookedServiceDAO dao = new BookedServiceDAO();
                 int memberId = 14; // Change this dynamically as needed
+                int needKeyIn = 2;
                 int completeId = 4;
                 List<Map<String, Object>> bookings = dao.getBookingsWithServicesByMember(memberId);
                 Map<Integer, List<Map<String, Object>>> groupedBookings = new HashMap<>();
@@ -65,16 +67,27 @@
 
                                     <td><%= service.get("booking_date") %></td>
                                     <td><%= new java.text.SimpleDateFormat("h:mm a").format(service.get("booking_time")) %></td>
-                                    <%int status_id = (int)service.get("status_id"); 
+                                    <%
+                                    	int status_id = (int)service.get("status_id"); 
                                     	String status = dao.getStatus(status_id);
                                     %>
                                     <td><%= status %></td>
-                                    <td><%= service.get("clock_in_code") %></td>
+                                    <td><%= (int)service.get("code") %></td>
                                     <td>
-                                        <% if ((int) service.get("status_id") == completeId) { %>
-                                            <button class="btn btn-primary">Complete</button>
-                                        <% }  else { %>
-                                        <button class="btn btn-primary" disabled>Waiting Code</button>
+                                    	<% if (status_id == 1) { %>
+                                        <p>Spotless Soon!</p>
+                                    	<%} else if (status_id == 4) { %>
+                                        <p>Cleaning Completed!</p>
+                                        
+                                        <%} else if (status_id == needKeyIn) { %>
+                                        <p>Please give the code to staff when they arrive.</p>
+                                        
+                                        <% } else { %>
+	                                    	<form action="../ConfirmComplete" method="post">
+											    <input type="hidden" name="serviceId" value="<%=(int)service.get("service_id") %>">
+											    <input type="hidden" name="bookingId" value="<%=(int)service.get("booking_id") %>">
+											    <button type="submit">Confirm Complete</button>
+											</form>
                                         <%} %>
                                     </td>
                                 </tr>
@@ -90,3 +103,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<%@include file="../assets/footer.html" %>
+
