@@ -156,6 +156,25 @@
     .terminatePromo:hover {
      	background-color: darkred;
     }
+    .mail-button {
+    position: fixed;
+    right: 20px; 
+    bottom: 50px; 
+    background-color: #ffa101; 
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px; 
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, transform 0.2s;
+}
+
+.mail-button:hover {
+    background-color: #e04e2a; 
+    transform: scale(1.1);
+}
+    
   
 	
 
@@ -370,6 +389,10 @@
 <div>
 </div>
 </div>
+
 <%@ include file="./assets/footer.html" %>
+<%if (!isAdmin){ %>
+<a href="mailto:spotlesscleaningservices.jad@gmail.com" class="mail-button">✉ Contact Us</a>
+<%} %>
 </body>
 </html>
