@@ -6,23 +6,23 @@ public class Service {
     private String description;
     private int categoryId;
     private double price;
-    private String image;
+
 
     // Constructor
-    public Service(int id, String name, String description, int categoryId, double price, String image) {
+    public Service(int id, String name, String description, int categoryId, double price) {
     	this.id = id;
         this.name = name;
         this.description = description;
         this.categoryId = categoryId;
         this.price = price;
-        this.image = image;
+
     }
-    public Service(String name, String description, int categoryId, double price, String image) {
+    public Service(String name, String description, int categoryId, double price) {
     	this.name = name;
     	this.description = description;
     	this.categoryId = categoryId;
     	this.price = price;
-    	this.image = image;
+    
     }
 
     // Getters and Setters
@@ -61,11 +61,5 @@ public class Service {
         this.price = price;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
+  
 }
