@@ -12,7 +12,7 @@ public class ServiceDAO {
 
     // Create: Insert a new service
     public boolean addService(Service service) {
-        String sql = "INSERT INTO service (name, description, category_id, price, image) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO service (name, description, category_id, price) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -21,7 +21,7 @@ public class ServiceDAO {
             stmt.setString(2, service.getDescription());
             stmt.setInt(3, service.getCategoryId());
             stmt.setDouble(4, service.getPrice());
-            stmt.setString(5, "cleaning.png");
+     
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0;
             
@@ -45,8 +45,8 @@ public class ServiceDAO {
                         rs.getString("name"),
                         rs.getString("description"),
                         rs.getInt("category_id"),
-                        rs.getDouble("price"),
-                        rs.getString("image")
+                        rs.getDouble("price")
+            
                 );
             }
         } catch (SQLException e) {
@@ -92,8 +92,7 @@ public class ServiceDAO {
                     rs.getString("name"),
                     rs.getString("description"),
                     rs.getInt("category_id"),
-                    rs.getDouble("price"),
-                    rs.getString("image")
+                    rs.getDouble("price")
                 );
                 result.add(service);  // Add the service to the list
             }
@@ -118,8 +117,7 @@ public class ServiceDAO {
                         rs.getString("name"),
                         rs.getString("description"),
                         rs.getInt("category_id"),
-                        rs.getDouble("price"),
-                        rs.getString("image")
+                        rs.getDouble("price")
                 ));
             }
         } catch (SQLException e) {

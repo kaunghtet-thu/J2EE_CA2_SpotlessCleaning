@@ -6,6 +6,7 @@ public class Product implements Serializable{
 	
     private static final long serialVersionUID = 1L;
 
+
 	private int id;
 	private String name;
 	private String description;
@@ -15,7 +16,7 @@ public class Product implements Serializable{
 	
 	// ✅ No-argument constructor (Important for JSON deserialization)
     public Product() {}
-	
+
 	public Product(int id, String name, String description, int stock, double price, double commission) {
 		this.id = id;
 		this.name = name;
@@ -24,7 +25,12 @@ public class Product implements Serializable{
 		this.price = price;
 		this.commission = commission;	
 	}
-
+  public Product(int id, String name, int stock, double price) {
+		this.id = id;
+		this.name = name;
+		this.stock = stock;
+		this.price = price;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -78,4 +84,5 @@ public class Product implements Serializable{
 	}
 	
 		
+
 }
