@@ -56,7 +56,7 @@ public class SetPaymentStatusToPending extends HttpServlet {
 
 
 	    Client client = ClientBuilder.newClient();
-	    String updateUrl = "http://localhost:3000/updatePaymentStatusToPending/" + paymentReferenceId;
+	    String updateUrl = "http://localhost:3000/cleaning-supplies/updatePaymentStatusToPending/" + paymentReferenceId;
 	    WebTarget target = client.target(updateUrl);
 	    Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
 
