@@ -127,6 +127,7 @@ public class SaveCheckoutData extends HttpServlet {
         String recipientEmail = request.getParameter("recipientEmail");
         session.setAttribute("recipientEmail", recipientEmail == null || recipientEmail.trim().isEmpty() ? userEmail : recipientEmail);
         
-        response.sendRedirect(request.getContextPath() + "/customer/payments.jsp?total=" + totalAmount);
+        //response.sendRedirect(request.getContextPath() + "/customer/payments.jsp?total=" + totalAmount);
+        response.sendRedirect("./GetAllProducts");
     }
 }
