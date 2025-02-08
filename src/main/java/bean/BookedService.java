@@ -1,8 +1,14 @@
 package bean;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+import DB.DatabaseUtil;
 
 public class BookedService {
     private int id;
@@ -36,6 +42,18 @@ public class BookedService {
 		this.code = code;
 		this.preferredGender = gender;
 	}
+
+	public BookedService(int id, int bookingId, int serviceId, LocalDate date, LocalTime time, int staffId, int addressId, int statusId) {
+		this.id = id;
+		this.bookingId = bookingId;
+		this.serviceId = serviceId;
+		this.bookingDate = date;
+		this.bookingTime = time;
+		this.staffId = staffId;
+		this.addressId = addressId;
+		this.statusId = statusId;
+	}
+
 
 	public int getId() {
         return id;
@@ -132,4 +150,24 @@ public class BookedService {
 	public void setCode(int code) {
 		this.code = code;
 	}
+	public String getStatus() {
+    	String sql = "SELECT * FROM status WHERE id = ?";
+    	try (Connection connection = DatabaseUtil.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+               stmt.setInt(1, this.serviceId);
+
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                      String status = rs.getString("name");
+                      return status;
+                   }
+               }
+           } catch (SQLException e) {
+               // Log the exception (Optional)
+               System.err.println("Error while fetching status name " + id);
+               e.printStackTrace();
+           }
+           return "N/A";
+    }
 }

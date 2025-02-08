@@ -15,6 +15,8 @@
     <title>Accepted Jobs</title>
 </head>
 <body>
+<%if (isStaff) { %>
+
     <div class="container mt-5">
         <h2 class="mb-4">Accepted Jobs</h2>
         <div class="accordion" id="bookingAccordion">
@@ -25,7 +27,7 @@
                 int completeId = 4;
                 //List<BookedService> services = dao.getAllBookedServices();
                 List<BookedService> services = dao.getAllBookedServicesByStaffId(memberId);
-                System.out.println("ziee: " + services.size());
+                System.out.println("accepted jobs number: " + services.size());
             %>
             
             <div class="accordion-item">
@@ -50,8 +52,9 @@
                             <tbody>
                                 <% for (BookedService service : services) { 
                                 	int id = service.getServiceId();
+                                	int statusId = service.getStatusId();
                                     String name = serviceDAO.getServiceNameById(id);
-                                    String status = dao.getStatus(service.getStatusId());
+                                    String status = dao.getStatus(statusId);
                                   
                                     // Parse the 24-hour format time to a Date object
                                     LocalTime time = service.getBookingTime();
@@ -62,16 +65,21 @@
 									<td><%= service.getBookingDate() %></td>
                                     <td><%= formattedTime %></td>
                                     <td><%= status %></td>
-                                    
+                                    <%if(statusId == 3) { %>
+                                        <td>You Already clocked in successfully.</td>
+                                    <%}else if(statusId == 4) { %>
+                                        <td>Cleaning Completed!</td>
+                                    <%} else { %>
                                     <td>
                                     	<form action="../VerifyCode" method="post">
-										    <input name="code" placeholder="Code">
+										    <input type="number" name="code" placeholder="6-digit number Code">
 										    <input type="hidden" name="serviceId" value="<%=id %>">
 										    <input type="hidden" name="bookingId" value="<%=service.getBookingId() %>">
 										    <button type="submit">Submit</button>
 										</form>
                                         
-                                    </td>
+                                    </td> <% } %>
+                                    
                                 </tr>
                                 <% } %>
                             </tbody>
@@ -81,6 +89,11 @@
             </div>
         </div>
     </div>
+<%}else { %>
+  	<p style="color: red; font-weight: bold; font-size: 16px; text-align: center;">You are not authorized</p>
+<%} %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<%@include file="../assets/footer.html" %>
+

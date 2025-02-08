@@ -5,21 +5,25 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 import DAO.BookedServiceDAO;
+import DAO.MemberDAO;
+import bean.BookedService;
 
 /**
  * Servlet implementation class VerifyCode
  */
-@WebServlet("/VerifyCode")
-public class VerifyCode extends HttpServlet {
+@WebServlet("/ConfirmComplete")
+public class ConfirmComplete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VerifyCode() {
+    public ConfirmComplete() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,39 +32,32 @@ public class VerifyCode extends HttpServlet {
 	 */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Retrieve the form fields
-        String codeStr = request.getParameter("code");
+    	HttpSession session = request.getSession();
         String serviceIdStr = request.getParameter("serviceId");
         String bookingIdStr = request.getParameter("bookingId");
+        int staffId = (int)session.getAttribute("memberId");
 
         // Validate the input fields
-        if (codeStr == null || codeStr.length() != 6 || !isNumeric(codeStr)) {
-            response.sendRedirect("./staff/acceptedJobs.jsp?errorMsg=Code must be a 6-digit number.");
-            return;
-        }
 
         if (serviceIdStr == null || bookingIdStr == null) {
-            response.sendRedirect("./staff/acceptedJobs.jsp?errorMsg=Invalid service or booking ID.");
+            response.sendRedirect("./customer/bookingHistory.jsp?errorMsg=Invalid service or booking ID.");
             return;
         }
 
         try {
-            int code = Integer.parseInt(codeStr);
             int serviceId = Integer.parseInt(serviceIdStr);
-            int bookingId = Integer.parseInt(bookingIdStr);
+            int bookingId = Integer.parseInt(bookingIdStr); 
 
             BookedServiceDAO dao = new BookedServiceDAO();
-            if (dao.verifyCode(bookingId, serviceId, code)) {
-                response.sendRedirect("./staff/acceptedJobs.jsp?successMsg=Key in success! Status updated!");
+            if (dao.confirmComplete(bookingId, serviceId)) {
+                response.sendRedirect("./customer/bookingHistory.jsp?successMsg=Confirmed! Thank you for booking with us!");
             } else {
-                response.sendRedirect("./staff/acceptedJobs.jsp?errorMsg=Wrong code! Try again.");
+                response.sendRedirect("./customer/bookingHistory.jsp?errorMsg=Something went wrong. Please try again.");
             }
         } catch (NumberFormatException e) {
-            response.sendRedirect("./staff/acceptedJobs.jsp?errorMsg=Invalid input. Please try again.");
+            response.sendRedirect("./customer/bookingHistory.jsp?errorMsg=Invalid input. Please try again.");
         }
     }
 
-    private static boolean isNumeric(String str) {
-        return str != null && str.matches("\\d+");
-    }
 
 }

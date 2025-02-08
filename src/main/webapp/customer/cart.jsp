@@ -1,3 +1,4 @@
+<%@include file="../assets/header.jsp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="bean.Service" %>
 <!DOCTYPE html>
@@ -9,7 +10,6 @@
     
 </head>
 <body>
-<%@include file="../assets/header.jsp" %>
 <link rel="stylesheet" type="text/css" href="../assets/css/cart.css">
 <%if (isMember){ %>
     <h1>Your Cart</h1>
