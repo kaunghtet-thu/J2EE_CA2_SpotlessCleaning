@@ -73,7 +73,7 @@
 <body>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Available Items</h2>
-        <form action="./payments.jsp?total=<%= totalAmount %>" method="post">
+        <form action="./customer/payments.jsp?total=<%= totalAmount %>" method="post">
         
 <div class="d-flex flex-wrap justify-content-center pb-3">
                 <% if (itemList != null) { %>
