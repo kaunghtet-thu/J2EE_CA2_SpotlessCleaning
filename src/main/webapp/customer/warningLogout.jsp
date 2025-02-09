@@ -15,7 +15,7 @@
     <div style="margin: 20px auto; padding: 20px; max-width: 500px; text-align: center;">
         <h2>Are you sure?</h2>
         <p>If you log out now, your cart will be cleared.</p>
-        <form method="post" action="../public/login.jsp" style="display: inline;">
+        <form method="post" action="../customer/logout.jsp" style="display: inline;">
             <button type="submit" style="padding: 10px 20px; background-color: #cc0000; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
                 Yes, Logout
             </button>
