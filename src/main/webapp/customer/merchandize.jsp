@@ -23,7 +23,7 @@
             <div class="d-flex flex-wrap justify-content-center pb-3">
                 <% if (itemList != null) { %>
                     <% for (Product item : itemList) { %>
-                        <div class="card p-3 shadow-sm mx-2" style="min-width: 300px;">
+                        <div class="card p-3 shadow-sm mx-2" style="min-width: 300px; padding: 10px;">
                             <h5 class="card-title"><%= item.getName() %></h5>
                             <p class="card-text"><%= item.getDescription() %></p>
                             <p class="fw-bold">$<%= item.getPrice() %></p>
