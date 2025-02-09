@@ -68,12 +68,10 @@ public class SetPaymentStatusToPending extends HttpServlet {
 	        	int id = Integer.parseInt(paymentReferenceId);
 	        	boolean updateOwn = dao.setTransferredStatusTrue(id);
 	        	if (updateOwn) {
-	        		 response.getWriter().write("Payment status updated successfully.");
-	 	            RequestDispatcher rd = request.getRequestDispatcher("./admin/spotifact.jsp?successMsg=Status updated successfully");
-	 	            rd.forward(request, response);
+	        	    response.getWriter().write("Payment status updated successfully.");
+	        	    response.sendRedirect("./admin/spotifact.jsp?successMsg=Status updated successfully");
 	        	} else {
-	        		 RequestDispatcher rd = request.getRequestDispatcher("./admin/spotifact.jsp?ErrMsg=Status updated to spotifact but failed to update on own server");
-		 	            rd.forward(request, response);
+	        	    response.sendRedirect("./admin/spotifact.jsp?ErrMsg=Status updated to spotifact but failed to update on own server");
 	        	}
 	           
 	        } else {
