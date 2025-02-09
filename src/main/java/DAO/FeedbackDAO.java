@@ -122,6 +122,18 @@ public class FeedbackDAO {
         }
         return false;
     }
+    public boolean addFeedback(int bookingId, int rating, String comments) {
+        String sql = "INSERT INTO feedback (booking_service_id, rating, comments) VALUES (?, ?, ?)";
+        try (Connection connection = DatabaseUtil.getConnection();PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, bookingId);
+            stmt.setInt(2, rating);
+            stmt.setString(3, comments);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     
     public ArrayList<Feedback> getAllFeedback(boolean isAdmin) {
         // Create an empty list to hold feedbacks
@@ -158,6 +170,8 @@ public class FeedbackDAO {
             return new ArrayList<>(); 
         }
     }
+    
+    
 
 
 }
