@@ -1,4 +1,4 @@
-package servlet.merchandize;
+package servlet.spotifact;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;

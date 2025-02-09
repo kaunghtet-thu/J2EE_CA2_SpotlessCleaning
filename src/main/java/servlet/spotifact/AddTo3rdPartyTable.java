@@ -1,4 +1,4 @@
-package servlet.merchandize;
+package servlet.spotifact;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
