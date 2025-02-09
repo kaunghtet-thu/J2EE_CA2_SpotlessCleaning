@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/style.css">
     
     <title>SPOTLESS Cleaning Services</title>
-    <!-- Bootstrap CSS -->
-
 
 </head>
 <body>

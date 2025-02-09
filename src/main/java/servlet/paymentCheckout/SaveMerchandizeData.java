@@ -15,6 +15,8 @@ import java.util.Map;
 
 import bean.MerchandizeInvoiceItem;
 import bean.Product;
+import bean.ProductSales;
+import bean.RetailerSales;
 
 /**
  * Servlet implementation class SaveMerchandizeData
@@ -25,6 +27,9 @@ public class SaveMerchandizeData extends HttpServlet {
     	HttpSession session = request.getSession();
         List<Product> itemList = (List<Product>) session.getAttribute("products");
         List<MerchandizeInvoiceItem> invoiceItems = new ArrayList<>();
+        
+        List<ProductSales> sales = new ArrayList<>();
+    	List<RetailerSales> rs = new ArrayList<>();
 
         if (itemList != null) {
             for (Product item : itemList) {
@@ -40,6 +45,9 @@ public class SaveMerchandizeData extends HttpServlet {
                             item.getPrice(),
                             quantity
                         );
+                        ProductSales ps = new ProductSales(item.getId(), item.getName(), item.getPrice(),item.getCommission() ,quantity);
+                        sales.add(ps);
+                        rs.add(new RetailerSales(2, item.getId(), ps.getAccountPayable(), 0, quantity));
                         invoiceItems.add(invoiceItem);
                     }
                 }
@@ -59,6 +67,8 @@ public class SaveMerchandizeData extends HttpServlet {
         // Convert back to string if needed
         String finalGrandTotal = String.valueOf(sum);
         session.setAttribute("finalGrandTotal", finalGrandTotal);
+        session.setAttribute("merchandizeSales", sales);
+        session.setAttribute("retailerSales", rs);
 
        
         System.out.println("Total Amount: $" + finalGrandTotal);

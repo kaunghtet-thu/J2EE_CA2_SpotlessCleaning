@@ -15,6 +15,7 @@ import java.util.List;
 import DAO.Invoicing;
 import bean.Invoice;
 import bean.MerchandizeInvoiceItem;
+import bean.ProductSales;
 import bean.ServiceInvoiceItem;
 import bean.InvoiceItem;
 

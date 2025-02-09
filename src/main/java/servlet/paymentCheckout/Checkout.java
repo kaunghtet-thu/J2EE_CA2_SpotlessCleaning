@@ -20,6 +20,8 @@ import bean.Address;
 import bean.BookedService;
 import bean.Invoice;
 import bean.InvoiceItem;
+import bean.ProductSales;
+import bean.RetailerSales;
 import bean.Service;
 
 
@@ -42,7 +44,18 @@ public class Checkout extends HttpServlet {
 		HttpSession session = request.getSession();
         int memberId = (int)session.getAttribute("memberId");
         List<BookedService> bookedServices =(List<BookedService>)session.getAttribute("bookingServices");
-        List<Service> cart = (List<Service>)session.getAttribute("cart");   
+        List<Service> cart = (List<Service>)session.getAttribute("cart");
+        List<Integer> newIds = new ArrayList<>();
+        // merchandize
+    	List<ProductSales> merchandizeSales = (List<ProductSales>) session.getAttribute("merchandizeSales");
+    	List<RetailerSales> retailerSales = (List<RetailerSales>) session.getAttribute("retailerSales");
+    	for(ProductSales p : merchandizeSales) {
+    		newIds.add(p.addToMerchandizeSales());
+    	}
+//    	for(RetailerSales rs : retailerSales) {
+//    		
+//    	}
+    	
 		// Create the booking
 		MemberDAO memberDAO = new MemberDAO();
         BookingDAO bookingDAO = new BookingDAO();
@@ -50,6 +63,7 @@ public class Checkout extends HttpServlet {
         // create booking
         int bookingId = bookingDAO.createBooking(memberId);
         session.setAttribute("bookingId", bookingId);
+        session.setAttribute("newIds", newIds);
         
         // Create the booking services
         BookedServiceDAO bookedServiceDAO = new BookedServiceDAO();
@@ -63,7 +77,7 @@ public class Checkout extends HttpServlet {
         		cart.removeIf(service -> service.getId() == (int)session.getAttribute("singleId"));
         	}
             session.setAttribute("cart", cart);
-            response.sendRedirect(request.getContextPath() + "/GenerateReceipt");
+            response.sendRedirect(request.getContextPath() + "/AddTo3rdPartyTable");
         } else {
         	response.sendRedirect(request.getContextPath() + "/customer/cart.jsp?errorMsg=Booking Failed!");
         }
