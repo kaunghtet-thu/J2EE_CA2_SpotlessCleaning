@@ -47,7 +47,7 @@ public class SaveMerchandizeData extends HttpServlet {
                         );
                         ProductSales ps = new ProductSales(item.getId(), item.getName(), item.getPrice(),item.getCommission() ,quantity);
                         sales.add(ps);
-                        rs.add(new RetailerSales(2, item.getId(), ps.getAccountPayable(), 0));
+                        rs.add(new RetailerSales(2, item.getId(), ps.getAccountPayable(), 0, quantity));
                         invoiceItems.add(invoiceItem);
                     }
                 }

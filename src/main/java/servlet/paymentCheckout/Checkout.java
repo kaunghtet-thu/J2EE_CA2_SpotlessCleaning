@@ -77,7 +77,7 @@ public class Checkout extends HttpServlet {
         		cart.removeIf(service -> service.getId() == (int)session.getAttribute("singleId"));
         	}
             session.setAttribute("cart", cart);
-            response.sendRedirect(request.getContextPath() + "/AddToLee");
+            response.sendRedirect(request.getContextPath() + "/AddTo3rdPartyTable");
         } else {
         	response.sendRedirect(request.getContextPath() + "/customer/cart.jsp?errorMsg=Booking Failed!");
         }

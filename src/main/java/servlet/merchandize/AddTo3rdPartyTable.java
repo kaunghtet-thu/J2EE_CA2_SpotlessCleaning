@@ -24,14 +24,14 @@ import bean.RetailerSales;
 /**
  * Servlet implementation class AddToLee
  */
-@WebServlet("/AddToLee")
-public class AddToLee extends HttpServlet {
+@WebServlet("/AddTo3rdPartyTable")
+public class AddTo3rdPartyTable extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddToLee() {
+    public AddTo3rdPartyTable() {
         super();
         // TODO Auto-generated constructor stub
     }
