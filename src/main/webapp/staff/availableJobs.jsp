@@ -26,7 +26,7 @@
                 BookedServiceDAO dao = new BookedServiceDAO();
                 ServiceDAO serviceDAO = new ServiceDAO();
                 int completeId = 4;
-                List<BookedService> services = dao.getAllBookedServices();                
+                List<BookedService> services = dao.getAllBookedServices(memberId);                
 				if(services.size() > 0) {
             %>
            

@@ -170,7 +170,7 @@
                             <!-- Gender Service -->                            
                             <div class="service-gender" style="display:block;">
 							    <label>Preferred Gender:</label><br>
-							    <input type="radio" id="male_<%= service.getId() %>" name="serviceGender_<%= service.getId() %>" value="M" checked>
+							    <input type="radio" id="male_<%= service.getId() %>" name="serviceGender_<%= service.getId() %>" value="M">
 							    <label for="male_<%= service.getId() %>">Male</label>
 							
 							    <input type="radio" id="female_<%= service.getId() %>" name="serviceGender_<%= service.getId() %>" value="F">
