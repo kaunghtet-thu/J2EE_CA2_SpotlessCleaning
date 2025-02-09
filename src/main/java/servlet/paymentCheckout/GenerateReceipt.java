@@ -27,6 +27,13 @@ public class GenerateReceipt extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	HttpSession session = request.getSession();
     	Invoice invoice = (Invoice) session.getAttribute("invoice");
+    	List<MerchandizeInvoiceItem> merchandizeInvoiceItems = (List<MerchandizeInvoiceItem>) session.getAttribute("merchandizeInvoiceItems");
+    	List<InvoiceItem> serviceInvoiceItems = invoice.getInvoiceItem();
+    	
+    	List<InvoiceItem> combinedList = new ArrayList<>();
+    	combinedList.addAll(serviceInvoiceItems);  // First list
+    	combinedList.addAll(merchandizeInvoiceItems);  // Second list
+    	invoice.setInvoiceItem(combinedList);
     	int bookingId = (int)session.getAttribute("bookingId");
     	invoice.setBookingId(bookingId);
 
