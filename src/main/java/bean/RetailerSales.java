@@ -5,6 +5,7 @@ public class RetailerSales {
 	private int productId;
 	private double accountReceivable;
 	private int paymentReferencingId;
+	
 	public RetailerSales(int retailerId, int productId, double accountReceivable, int paymentReferencingId) {
 
 		this.retailerId = retailerId;
@@ -12,19 +13,23 @@ public class RetailerSales {
 		this.accountReceivable = accountReceivable;
 		this.paymentReferencingId = paymentReferencingId;
 	}
+	
 	public int getRetailerId() {
 		return retailerId;
 	}
+	
 	public int getProductId() {
 		return productId;
 	}
+	
 	public double getAccountReceivable() {
 		return accountReceivable;
 	}
+	
 	public int getPaymentReferencingId() {
 		return paymentReferencingId;
 	}
-	
-	
-	
+	public void setPaymentReferencingId(int id) {
+		this.paymentReferencingId = id;
+	}
 }
