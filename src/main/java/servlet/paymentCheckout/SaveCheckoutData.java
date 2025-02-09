@@ -92,6 +92,8 @@ public class SaveCheckoutData extends HttpServlet {
             
             // gender
             String gender = request.getParameter("serviceGender_" + serviceId);
+            if(gender == null)
+            	gender = "";
             
 
 

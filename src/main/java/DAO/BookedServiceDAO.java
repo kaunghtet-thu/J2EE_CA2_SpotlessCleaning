@@ -59,7 +59,11 @@ public class BookedServiceDAO {
 	            stmt.setTime(4, Time.valueOf(service.getBookingTime()));
 	            stmt.setInt(5, service.getAddressId());
 	            stmt.setInt(6, service.getCode()); 
-	            stmt.setString(7, service.getPreferredGender()); 
+	            if (service.getPreferredGender() == null || service.getPreferredGender().trim().isEmpty()) {
+	                stmt.setNull(7, Types.VARCHAR); // Set NULL if empty or null
+	            } else {
+	                stmt.setString(7, service.getPreferredGender());
+	            }
 	            stmt.addBatch();
 	        }
 
@@ -80,35 +84,49 @@ public class BookedServiceDAO {
 	    }
 	}
 	// Read: Get all booking services for staff
-    public List<BookedService> getAllBookedServices() {
-        List<BookedService> bookedServices = new ArrayList<>();
-        String sql = "SELECT * FROM booking_service where staff_id = 0";
+	public List<BookedService> getAllBookedServices(int memberId) {
+	    List<BookedService> bookedServices = new ArrayList<>();
+	    
+	    // First, get the gender of the member
+	    String getGenderSql = "SELECT gender FROM member WHERE id = ?";
+	    
+	    try (Connection conn = DatabaseUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(getGenderSql)) {
 
-        try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        ps.setInt(1, memberId);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        if (rs.next()) {
+	            String gender = rs.getString("gender");
+	            
+	            // Now fetch booked services based on gender
+	            String sql = "SELECT * FROM booking_service WHERE staff_id = 0 AND (preferred_gender = ? OR preferred_gender IS NULL)";
+	            
+	            try (PreparedStatement ps2 = conn.prepareStatement(sql)) {
+	                ps2.setString(1, gender);
+	                ResultSet rs2 = ps2.executeQuery();
+	                
+	                while (rs2.next()) {
+	                	BookedService service = new BookedService(
+	                            rs2.getInt("id"),
+	                            rs2.getInt("booking_id"),
+	                            rs2.getInt("service_id"),
+	                            rs2.getDate("booking_date").toLocalDate(),
+	                            rs2.getTime("booking_time").toLocalTime(),
+	                            rs2.getInt("staff_id"),
+	                            rs2.getInt("address_id")
+	                    );
+	                    bookedServices.add(service);
+	                }
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 
+	    return bookedServices;
+	}
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    BookedService service = new BookedService(
-                            rs.getInt("id"),
-                            rs.getInt("booking_id"),
-                            rs.getInt("service_id"),
-                            rs.getDate("booking_date").toLocalDate(),
-                            rs.getTime("booking_time").toLocalTime(),
-                            rs.getInt("staff_id"),
-                            rs.getInt("address_id")
-                    );
-                    bookedServices.add(service);
-                }
-            }
-        } catch (SQLException e) {
-            // Log the exception (Optional)
-            System.err.println("Error while fetching booking services: ");
-            e.printStackTrace();
-        }
-        return bookedServices;
-    }
     // Read: Get all booking services for staff id
     public List<BookedService> getAllBookedServicesByStaffId(int id) {
     	List<BookedService> bookedServices = new ArrayList<>();
