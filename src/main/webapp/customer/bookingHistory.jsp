@@ -77,7 +77,11 @@
                                     	<% if (status_id == 1) { %>
                                         <p>Spotless Soon!</p>
                                     	<%} else if (status_id == 4) { %>
-                                        <p>Cleaning Completed!</p>
+                                        <form action="./feedback.jsp" method="post">
+										    <input type="hidden" name="serviceId" value="<%=(int)service.get("service_id") %>">
+										    <input type="hidden" name="bookingId" value="<%=(int)service.get("booking_id") %>">
+										    <button type="submit">Feedback</button>
+										</form>
                                         
                                         <%} else if (status_id == needKeyIn) { %>
                                         <p>Please give the code to staff when they arrive.</p>

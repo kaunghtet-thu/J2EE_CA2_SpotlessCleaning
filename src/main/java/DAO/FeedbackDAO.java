@@ -73,13 +73,24 @@ public class FeedbackDAO {
 
 
     // creat new  feedback
-    public boolean addFeedback(int bookingId, int rating, String comments) {
-        String sql = "INSERT INTO feedback (booking_service_id, rating, comments) VALUES (?, ?, ?)";
-        try (Connection connection = DatabaseUtil.getConnection();PreparedStatement stmt = connection.prepareStatement(sql)) {
+    public boolean addFeedback(int bookingId,int serviceId, int rating, String comments) {
+        String sql = "select * from booking_service where booking_id = ? and service_id = ?";
+        try {
+        	Connection connection = DatabaseUtil.getConnection();
+        	PreparedStatement stmt = connection.prepareStatement(sql); 
             stmt.setInt(1, bookingId);
-            stmt.setInt(2, rating);
-            stmt.setString(3, comments);
-            return stmt.executeUpdate() > 0;
+            stmt.setInt(2, serviceId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+            	String sql2 = "INSERT INTO feedback (booking_service_id, rating, comments) VALUES (?, ?, ?)";
+            	PreparedStatement stmt2 = connection.prepareStatement(sql2); 
+            	stmt2.setInt(1, rs.getInt("id"));
+            	stmt2.setInt(2, rating);
+            	stmt2.setString(3, comments);
+                stmt2.executeUpdate();
+                return stmt2.executeUpdate() > 0;                	
+
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
